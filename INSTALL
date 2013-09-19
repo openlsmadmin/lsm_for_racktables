@@ -1,6 +1,6 @@
 ﻿Light Weight Switch Management (LSM)
 =======================================
-openLSM is a tool that allows non-network people to run basic switch commands using a web interface. It extracts switch data from racktables and allows you to connect to the switch over ssh. You can: 
+LSM is a tool that allows non-network people to run basic switch commands using a web interface. It extracts switch data from racktables and allows you to connect to the switch over ssh. You can: 
 - check logs, 
 - add / remove port vlans, 
 - check port status, 
@@ -16,18 +16,17 @@ openLSM currently supports the following switches:
 
 Some Facts You Should Know Before You Start
 =============================================
-- openLSM was built using codeigniter 2.1.2, which is all php based. 
-- openLSM uses phpseclib to connect via ssh to your switch. (Thanks Terrafrost!) 
-- openLSM was designed for larger organizations with multiple branch offices / locations. The concept of "switch location" is baked in to the foundations of this product. You can use it for smaller ops too, but you'll have to still provide location information in order for it to work. 
-- openLSM has been optimized for mobile browsing on the ipod5 to start. 
+- LSM was built using codeigniter 2.1.2, which is all php based. 
+- LSM uses phpseclib to connect via ssh to your switch. (Thanks Terrafrost!) 
+- LSM was designed for larger organizations with multiple branch offices / locations. The concept of "switch location" is baked in to the foundations of this product. You can use it for smaller ops too, but you'll have to still provide location information in order for it to work. 
+- We are targetting the ipod5 as our main mobile device for this initial release
 - Each switch implements ssh slightly differently, which is why openLSM supports only very specific switch models, and firmware versions. 
-- this is my first opensource project, so you'll have to be patient with me as a I learn how to navigate the opensource world / support a project.
 
 Dependencies 
 ==============
 - racktables 0.20.3 
 - phpseclib 
-- openLSM was built using codeigniter 2.1.2
+- LSM was built using codeigniter 2.1.2
 
 Installation Guide
 ====================
