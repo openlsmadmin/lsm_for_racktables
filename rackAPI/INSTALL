@@ -1,0 +1,97 @@
+﻿Light Weight Switch Management (LSM)
+=======================================
+openLSM is a tool that allows non-network people to run basic switch commands using a web interface. It extracts switch data from racktables and allows you to connect to the switch over ssh. You can: 
+- check logs, 
+- add / remove port vlans, 
+- check port status, 
+- turn indicator lights on / off etc. 
+- enable / disable power over ethernet for ports 
+
+openLSM currently supports the following switches: 
+
+- HP Procurve 3500 - firmware version K.15.06.0008
+- HP Procurve 5406 - firmware version K.15.06.0008
+- CISCO SF 300 - firmware version Cisco sx300_fw-1120
+- CISCO IE 3000 - firmware version 12.2(58)SE2
+
+Some Facts You Should Know Before You Start
+=============================================
+- openLSM was built using codeigniter 2.1.2, which is all php based. 
+- openLSM uses phpseclib to connect via ssh to your switch. (Thanks Terrafrost!) 
+- openLSM is designed for larger organizations with multiple branch offices / locations. The concept of "switch location" is baked in to the foundations of this product. You can use it for smaller ops too, but you'll have to still provide location information in order for it to work. 
+- openLSM has been optimized for mobile browsing on the ipod5 to start. 
+- Each switch implements ssh slightly differently, which is why openLSM supports only very specific switch models, and firmware versions. 
+- this is my first opensource project, so you'll have to be patient with me as a I learn how to navigate the opensource world / support a project.
+
+Dependencies 
+==============
+- racktables 0.20.3 
+- phpseclib 
+- openLSM was built using codeigniter 2.1.2
+
+Installation Guide
+====================
+Follow these steps after you have successfully installed racktables and phpseclib on your webserver. 
+
+Installing Racktables
+----------------------
+Follow the installation wizard included with racktables.
+
+Installing phpseclib
+--------------------
+Copy phpseclib to a new web folder called “phpseclib”.  The path should look something like “/var/www/phpseclib”
+
+Installing the rackAPI
+----------------------
+LSM is actually made up of two different applications.  “rackAPI” is a web app that brokers data from  the racktables database which is consumed by the openLSM application.  openLSM displays the racktables data and provides connectivity to the switches.
+This section will step you through installing and configuring rackAPI. 
+
+Installation Steps:
+
+1. Unzip and copy the rackAPI files to a new web folder called “rackAPI”.  The path should look something like “/var/www/rackAPI”.
+2. Edit /var/www/rackAPI/application/config/database.php.  Find the follow entries and replace the values with the correct information to connect to your racktables database: 
+		$db['default']['hostname'] = 'localhost'; 
+		$db['default']['username'] = 'rackuser'; 
+		$db['default']['password'] = 'myrackuserpassword'; 
+		$db['default']['database'] = 'racktables'; 
+		$db['default']['dbdriver'] = 'mysql';
+3. To test your installation of rackAPI, open your browser and navigate to the following URL: 
+http://yourservername/rackAPI/index.php/devices/getlocations
+The system should return json data representing your racktables' location information.
+
+Installing  openLSM
+--------------------
+1. Copy the LSM  files to a new web folder called “lsm”.  The path should look something like “/var/www/lsm”
+2. Edit /var/www/lsm/application/libraries/ciscoIE3000_ssh.php
+	Modify the following line to include the correct path: 
+	set_include_path(get_include_path() . PATH_SEPARATOR . '/var/www//phpseclib');
+3. Edit /var/www/lsm/application/libraries/ciscoSF302_ssh.php
+	Modify the following line to include the correct path: 
+	set_include_path(get_include_path() . PATH_SEPARATOR . '/var/www//phpseclib');
+4. Edit /var/www/lsm/application/libraries/HP5406_ssh.php
+	Modify the following line to include the correct path: 
+	set_include_path(get_include_path() . PATH_SEPARATOR . '/var/www//phpseclib');
+5. Edit /var/www/lsm/application/models/racktables_model.php
+	Modify all “rackAPI” URLs references to reflect the correct web address on your server. 
+	$url = "http://yourwebservername/rackAPI/index.php/devices/getallswitches";
+
+Getting Started with Racktables
+================================
+In order for openLSM to work with racktables, the following must be in place:
+1. racktables version 0.20.3
+2. openLSM is driven by the concept of "location". You must have a "Location" tree created in racktables, and tag all your switches. For example, I have created the following Tag Tree in racktables: 
+	Location 
+		Canada 
+			Can-Building-1 
+				Room123 
+			Can-Building-2 
+				Room333 
+		United States 
+			USA-Building1 
+				Room456 
+		Japan 
+			Japan-Building1 
+				Room3 
+3. Each switch must have a fully qualified domain name. This is the field that is used to connect to the switch, not IP addresses
+4. Each switch must have a hardware model specified.
+5. Any object in Racktables that is linked with other objects will be locked down in LSM.  This is to prevent newbie field technicians from making changes to the network that can cause some serious grief. 

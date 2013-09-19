@@ -1,0 +1,244 @@
+Changing name on my test switch:  
+
+All sql generaeted in back end:
+
+
+                   78 Connect   root@localhost on racktables
+                   78 Query     set names 'utf8'
+                   78 Query     SELECT varname, varvalue, vartype, is_hidden, emptyok, description, is_userdefined FROM Config ORDER BY e
+                   78 Query     select script_text from Script where script_name = 'RackCodeCache'
+                   78 Query     select id, parent_id, tag, entity_realm as realm, count(entity_id) as refcnt from TagTree left join TagSg
+                   78 Query     SELECT user_id FROM UserAccount WHeRE user_name = 'admin'
+                   78 Query     SELECT tag_id, UserAccount.user_id, UserAccount.user_name, UserAccount.user_password_hash, UserAccount.ud
+                   78 Query     SELECT varname, varvalue FROM UserConfig WHERE user = 'admin'
+                   78 Quit
+120906 17:37:30    79 Connect   root@localhost on racktables
+                   79 Query     set names 'utf8'
+                   79 Query     SELECT varname, varvalue, vartype, is_hidden, emptyok, description, is_userdefined FROM Config ORDER BY e
+                   79 Query     select script_text from Script where script_name = 'RackCodeCache'
+                   79 Query     select id, parent_id, tag, entity_realm as realm, count(entity_id) as refcnt from TagTree left join TagSg
+                   79 Query     SELECT user_id FROM UserAccount WHeRE user_name = 'admin'
+                   79 Query     SELECT tag_id, UserAccount.user_id, UserAccount.user_name, UserAccount.user_password_hash, UserAccount.ud
+                   79 Query     SELECT varname, varvalue FROM UserConfig WHERE user = 'admin'
+                   79 Query     SELECT tag_id, RackObject.id, RackObject.name, RackObject.label, RackObject.asset_no, RackObject.objtyped
+                   79 Query     select AM.attr_id, A.name as attr_name, A.type as attr_type, C.name as chapter_name, C.id as chapter_id,e
+                   
+                   ** this is the key stuff **********
+                   79 Query     START TRANSACTION
+                   79 Query     UPDATE RackObject SET name='CAESA2-JLEE-1', label='newlabelvalue', has_problems='no', asset_no='this', c'
+                   79 Query     INSERT INTO RackObjectHistory SELECT *, CURRENT_TIMESTAMP(), 'admin' FROM RackObject WHERE id='416'
+                   79 Query     select type as attr_type from Attribute where id = '14'
+                   
+				returns "STRING"
+				
+				
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='14'
+                   79 Query     select type as attr_type from Attribute where id = '18'
+                   
+                   
+				return UINT
+				
+				
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='18'
+                   79 Query     select type as attr_type from Attribute where id = '17'
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='17'
+                   79 Query     select type as attr_type from Attribute where id = '16'
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='16'
+                   79 Query     select type as attr_type from Attribute where id = '3'
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='3'
+                   79 Query     select type as attr_type from Attribute where id = '22'
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='22'
+                   79 Query     select type as attr_type from Attribute where id = '1'
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='1'
+                   79 Query     select type as attr_type from Attribute where id = '20'
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='20'
+                   79 Query     select type as attr_type from Attribute where id = '28'
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='28'
+                   79 Query     select type as attr_type from Attribute where id = '21'
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='21'
+                   79 Query     select type as attr_type from Attribute where id = '4'
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='4'
+                   79 Query     select type as attr_type from Attribute where id = '5'
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='5'
+                   79 Query     select type as attr_type from Attribute where id = '24'
+                   79 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='24'
+                   79 Query     SELECT DISTINCT RS.rack_id FROM RackSpace RS LEFT JOIN EntityLink EL ON RS.object_id = EL.parent_entity_d
+                   79 Query     commit
+                   79 Quit
+                   80 Connect   root@localhost on racktables
+                   80 Query     set names 'utf8'
+                   80 Query     SELECT varname, varvalue, vartype, is_hidden, emptyok, description, is_userdefined FROM Config ORDER BY e
+                   80 Query     select script_text from Script where script_name = 'RackCodeCache'
+                   80 Query     select id, parent_id, tag, entity_realm as realm, count(entity_id) as refcnt from TagTree left join TagSg
+                   80 Query     SELECT user_id FROM UserAccount WHeRE user_name = 'admin'
+                   80 Query     SELECT tag_id, UserAccount.user_id, UserAccount.user_name, UserAccount.user_password_hash, UserAccount.ud
+                   80 Query     SELECT varname, varvalue FROM UserConfig WHERE user = 'admin'
+                   80 Query     SELECT tag_id, RackObject.id, RackObject.name, RackObject.label, RackObject.asset_no, RackObject.objtyped
+                   80 Query     select AM.attr_id, A.name as attr_name, A.type as attr_type, C.name as chapter_name, C.id as chapter_id,e
+                   80 Query     SELECT id, type, name, chapter_id, (SELECT dict_value FROM Dictionary WHERE dict_key = objtype_id) AS obe
+                   80 Query     select dict_key, dict_value as value from Dictionary where chapter_id = '1'
+                   80 Query     SELECT COUNT(*) FROM ObjectParentCompat WHERE child_objtype_id = '8'
+                   80 Query     SELECT id, parent_entity_type AS entity_type, parent_entity_id AS entity_id FROM EntityLink WHERE child_'
+                   80 Query     select dict_key, dict_value as value from Dictionary where chapter_id = '12'
+                   80 Query     select dict_key, dict_value as value from Dictionary where chapter_id = '14'
+                   80 Query     select ctime, user_name, RackObjectHistory.name as name, label, asset_no, has_problems, dict_value, comme
+                   80 Query     select count(*) from RackRow
+                   80 Query     select count(*) from Rack
+                   80 Query     select avg(height) from Rack
+                   80 Query     select sum(height) from Rack
+                   80 Query     SELECT name AS osif, type, inet_ntoa(ip) AS dottedquad FROM IPv4Allocation WHERE object_id = '416'
+                   80 Query     select INET_NTOA(ip) as ip, name, reserved from IPv4Address where (ip between '168690476' and '168690476)
+                   80 Query     select INET_NTOA(ip) as ip, object_id, name, type from IPv4Allocation where (ip between '168690476' and e
+                   80 Query     select vs_id, inet_ntoa(vip) as ip, vport, proto, vs.name, object_id from IPv4VS as vs inner join IPv4LBd
+                   80 Query     select inet_ntoa(rsip) as ip, inservice, rsport, rspool_id, rsp.name as rspool_name from IPv4RS as rs ind
+                   80 Query     select proto, INET_NTOA(localip) as localip, localport, INET_NTOA(remoteip) as remoteip, remoteport, deso
+                   80 Query     select proto, INET_NTOA(localip) as localip, localport, INET_NTOA(remoteip) as remoteip, remoteport, deso
+                   80 Query     SELECT name AS osif, type, ip AS ip FROM IPv6Allocation WHERE object_id = '416'
+                   80 Query     SELECT name AS osif, type, inet_ntoa(ip) AS dottedquad FROM IPv4Allocation WHERE object_id = '416'
+                   80 Query     select INET_NTOA(ip) as ip, name, reserved from IPv4Address where (ip between '168690476' and '168690476)
+                   80 Query     select INET_NTOA(ip) as ip, object_id, name, type from IPv4Allocation where (ip between '168690476' and e
+                   80 Query     select vs_id, inet_ntoa(vip) as ip, vport, proto, vs.name, object_id from IPv4VS as vs inner join IPv4LBd
+                   80 Query     select inet_ntoa(rsip) as ip, inservice, rsport, rspool_id, rsp.name as rspool_name from IPv4RS as rs ind
+                   80 Query     select proto, INET_NTOA(localip) as localip, localport, INET_NTOA(remoteip) as remoteip, remoteport, deso
+                   80 Query     select proto, INET_NTOA(localip) as localip, localport, INET_NTOA(remoteip) as remoteip, remoteport, deso
+                   80 Query     SELECT id, name, label, l2address, iif_id, (SELECT iif_name FROM PortInnerInterface WHERE id = iif_id) A'
+                   80 Query     select porta, portb, cable from Link where porta = '3080' or portb = '3080'
+                   80 Query     select porta, portb, cable from Link where porta = '3089' or portb = '3089'
+                   80 Query     select porta, portb, cable from Link where porta = '3081' or portb = '3081'
+                   80 Query     select porta, portb, cable from Link where porta = '3082' or portb = '3082'
+                   80 Query     select porta, portb, cable from Link where porta = '3083' or portb = '3083'
+                   80 Query     select porta, portb, cable from Link where porta = '3084' or portb = '3084'
+                   80 Query     select porta, portb, cable from Link where porta = '3085' or portb = '3085'
+                   80 Query     select porta, portb, cable from Link where porta = '3086' or portb = '3086'
+                   80 Query     select porta, portb, cable from Link where porta = '3087' or portb = '3087'
+                   80 Query     select porta, portb, cable from Link where porta = '3088' or portb = '3088'
+                   80 Query     select porta, portb, cable from Link where porta = '3114' or portb = '3114'
+                   80 Query     select porta, portb, cable from Link where porta = '3123' or portb = '3123'
+                   80 Query     select porta, portb, cable from Link where porta = '3124' or portb = '3124'
+                   80 Query     select porta, portb, cable from Link where porta = '3125' or portb = '3125'
+                   80 Query     select porta, portb, cable from Link where porta = '3126' or portb = '3126'
+                   80 Query     select porta, portb, cable from Link where porta = '3127' or portb = '3127'
+                   80 Query     select porta, portb, cable from Link where porta = '3128' or portb = '3128'
+                   80 Query     select porta, portb, cable from Link where porta = '3129' or portb = '3129'
+                   80 Query     select porta, portb, cable from Link where porta = '3130' or portb = '3130'
+                   80 Query     select porta, portb, cable from Link where porta = '3131' or portb = '3131'
+                   80 Query     select porta, portb, cable from Link where porta = '3132' or portb = '3132'
+                   80 Query     select porta, portb, cable from Link where porta = '3115' or portb = '3115'
+                   80 Query     select porta, portb, cable from Link where porta = '3133' or portb = '3133'
+                   80 Query     select porta, portb, cable from Link where porta = '3134' or portb = '3134'
+                   80 Query     select porta, portb, cable from Link where porta = '3135' or portb = '3135'
+                   80 Query     select porta, portb, cable from Link where porta = '3136' or portb = '3136'
+                   80 Query     select porta, portb, cable from Link where porta = '3137' or portb = '3137'
+                   80 Query     select porta, portb, cable from Link where porta = '3116' or portb = '3116'
+                   80 Query     select porta, portb, cable from Link where porta = '3117' or portb = '3117'
+                   80 Query     select porta, portb, cable from Link where porta = '3118' or portb = '3118'
+                   80 Query     select porta, portb, cable from Link where porta = '3119' or portb = '3119'
+                   80 Query     select porta, portb, cable from Link where porta = '3120' or portb = '3120'
+                   80 Query     select porta, portb, cable from Link where porta = '3121' or portb = '3121'
+                   80 Query     select porta, portb, cable from Link where porta = '3122' or portb = '3122'
+                   80 Query     select porta, portb, cable from Link where porta = '3140' or portb = '3140'
+                   80 Query     select porta, portb, cable from Link where porta = '3149' or portb = '3149'
+                   80 Query     select porta, portb, cable from Link where porta = '3150' or portb = '3150'
+                   80 Query     select porta, portb, cable from Link where porta = '3151' or portb = '3151'
+                   80 Query     select porta, portb, cable from Link where porta = '3152' or portb = '3152'
+                   80 Query     select porta, portb, cable from Link where porta = '3153' or portb = '3153'
+                   80 Query     select porta, portb, cable from Link where porta = '3154' or portb = '3154'
+                   80 Query     select porta, portb, cable from Link where porta = '3155' or portb = '3155'
+                   80 Query     select porta, portb, cable from Link where porta = '3156' or portb = '3156'
+                   80 Query     select porta, portb, cable from Link where porta = '3157' or portb = '3157'
+                   80 Query     select porta, portb, cable from Link where porta = '3158' or portb = '3158'
+                   80 Query     select porta, portb, cable from Link where porta = '3141' or portb = '3141'
+                   80 Query     select porta, portb, cable from Link where porta = '3159' or portb = '3159'
+                   80 Query     select porta, portb, cable from Link where porta = '3160' or portb = '3160'
+                   80 Query     select porta, portb, cable from Link where porta = '3161' or portb = '3161'
+                   80 Query     select porta, portb, cable from Link where porta = '3162' or portb = '3162'
+                   80 Query     select porta, portb, cable from Link where porta = '3163' or portb = '3163'
+                   80 Query     select porta, portb, cable from Link where porta = '3142' or portb = '3142'
+                   80 Query     select porta, portb, cable from Link where porta = '3143' or portb = '3143'
+                   80 Query     select porta, portb, cable from Link where porta = '3144' or portb = '3144'
+                   80 Query     select porta, portb, cable from Link where porta = '3145' or portb = '3145'
+                   80 Query     select porta, portb, cable from Link where porta = '3146' or portb = '3146'
+                   80 Query     select porta, portb, cable from Link where porta = '3147' or portb = '3147'
+                   80 Query     select porta, portb, cable from Link where porta = '3148' or portb = '3148'
+                   80 Query     SELECT name AS osif, type, inet_ntoa(ip) AS dottedquad FROM IPv4Allocation WHERE object_id = '416'
+                   80 Query     select INET_NTOA(ip) as ip, name, reserved from IPv4Address where (ip between '168690476' and '168690476)
+                   80 Query     select INET_NTOA(ip) as ip, object_id, name, type from IPv4Allocation where (ip between '168690476' and e
+                   80 Query     select vs_id, inet_ntoa(vip) as ip, vport, proto, vs.name, object_id from IPv4VS as vs inner join IPv4LBd
+                   80 Query     select inet_ntoa(rsip) as ip, inservice, rsport, rspool_id, rsp.name as rspool_name from IPv4RS as rs ind
+                   80 Query     select proto, INET_NTOA(localip) as localip, localport, INET_NTOA(remoteip) as remoteip, remoteport, deso
+                   80 Query     select proto, INET_NTOA(localip) as localip, localport, INET_NTOA(remoteip) as remoteip, remoteport, deso
+                   80 Query     SELECT name AS osif, type, ip AS ip FROM IPv6Allocation WHERE object_id = '416'
+                   80 Query     select proto, INET_NTOA(localip) as localip, localport, INET_NTOA(remoteip) as remoteip, remoteport, ipat
+                   80 Query     select proto, INET_NTOA(localip) as localip, localport, INET_NTOA(remoteip) as remoteip, remoteport, IPvt
+                   80 Query     select vs_id, inet_ntoa(vip) as vip, vport, proto, vs.name, pool.id as pool_id, pool.name as pool_name, e
+                   80 Query     SELECT FileLink.file_id, FileLink.id AS link_id, name, type, size, ctime, mtime, atime, comment FROM File
+                   80 Query     SELECT object_id, domain_id, template_id, mutex_rev, out_of_sync, last_errno, TIMESTAMPDIFF(SECOND, last'
+                   80 Query     SELECT id, description FROM VLANDomain ORDER BY description
+                   80 Query     SELECT id, description FROM VLANSwitchTemplate ORDER BY description
+                   80 Query     SELECT object_id, domain_id, template_id, mutex_rev, out_of_sync, last_errno, TIMESTAMPDIFF(SECOND, last'
+                   80 Query     SELECT object_id, domain_id, template_id, mutex_rev, out_of_sync, last_errno, TIMESTAMPDIFF(SECOND, last'
+                   80 Quit
+                   81 Connect   root@localhost on racktables
+                   81 Query     set names 'utf8'
+                   81 Query     SELECT varname, varvalue, vartype, is_hidden, emptyok, description, is_userdefined FROM Config ORDER BY e
+                   81 Query     select script_text from Script where script_name = 'RackCodeCache'
+                   81 Query     select id, parent_id, tag, entity_realm as realm, count(entity_id) as refcnt from TagTree left join TagSg
+                   81 Query     SELECT user_id FROM UserAccount WHeRE user_name = 'admin'
+                   81 Query     SELECT tag_id, UserAccount.user_id, UserAccount.user_name, UserAccount.user_password_hash, UserAccount.ud
+                   81 Query     SELECT varname, varvalue FROM UserConfig WHERE user = 'admin'
+                   81 Quit
+                   83 Connect   root@localhost on racktables
+                   83 Query     set names 'utf8'
+                   83 Query     SELECT varname, varvalue, vartype, is_hidden, emptyok, description, is_userdefined FROM Config ORDER BY e
+                   83 Query     select script_text from Script where script_name = 'RackCodeCache'
+                   83 Query     select id, parent_id, tag, entity_realm as realm, count(entity_id) as refcnt from TagTree left join TagSg
+                   83 Query     SELECT user_id FROM UserAccount WHeRE user_name = 'admin'
+                   83 Query     SELECT tag_id, UserAccount.user_id, UserAccount.user_name, UserAccount.user_password_hash, UserAccount.ud
+                   83 Query     SELECT varname, varvalue FROM UserConfig WHERE user = 'admin'
+                   83 Quit
+                   82 Connect   root@localhost on racktables
+                   82 Query     set names 'utf8'
+                   84 Connect   root@localhost on racktables
+                   84 Query     set names 'utf8'
+                   84 Query     SELECT varname, varvalue, vartype, is_hidden, emptyok, description, is_userdefined FROM Config ORDER BY e
+                   84 Query     select script_text from Script where script_name = 'RackCodeCache'
+                   84 Query     select id, parent_id, tag, entity_realm as realm, count(entity_id) as refcnt from TagTree left join TagSg
+                   84 Query     SELECT user_id FROM UserAccount WHeRE user_name = 'admin'
+                   84 Query     SELECT tag_id, UserAccount.user_id, UserAccount.user_name, UserAccount.user_password_hash, UserAccount.ud
+                   84 Query     SELECT varname, varvalue FROM UserConfig WHERE user = 'admin'
+                   84 Quit
+                   82 Query     SELECT varname, varvalue, vartype, is_hidden, emptyok, description, is_userdefined FROM Config ORDER BY e
+                   82 Query     select script_text from Script where script_name = 'RackCodeCache'
+                   82 Query     select id, parent_id, tag, entity_realm as realm, count(entity_id) as refcnt from TagTree left join TagSg
+                   82 Query     SELECT user_id FROM UserAccount WHeRE user_name = 'admin'
+                   82 Query     SELECT tag_id, UserAccount.user_id, UserAccount.user_name, UserAccount.user_password_hash, UserAccount.ud
+                   82 Query     SELECT varname, varvalue FROM UserConfig WHERE user = 'admin'
+                   86 Connect   root@localhost on racktables
+                   82 Quit
+                   86 Query     set names 'utf8'
+                   86 Query     SELECT varname, varvalue, vartype, is_hidden, emptyok, description, is_userdefined FROM Config ORDER BY e
+                   86 Query     select script_text from Script where script_name = 'RackCodeCache'
+                   85 Connect   root@localhost on racktables
+                   85 Query     set names 'utf8'
+                   85 Query     SELECT varname, varvalue, vartype, is_hidden, emptyok, description, is_userdefined FROM Config ORDER BY e
+                   86 Query     select id, parent_id, tag, entity_realm as realm, count(entity_id) as refcnt from TagTree left join TagSg
+                   86 Query     SELECT user_id FROM UserAccount WHeRE user_name = 'admin'
+                   86 Query     SELECT tag_id, UserAccount.user_id, UserAccount.user_name, UserAccount.user_password_hash, UserAccount.ud
+                   86 Query     SELECT varname, varvalue FROM UserConfig WHERE user = 'admin'
+                   85 Query     select script_text from Script where script_name = 'RackCodeCache'
+                   85 Query     select id, parent_id, tag, entity_realm as realm, count(entity_id) as refcnt from TagTree left join TagSg
+                   85 Query     SELECT user_id FROM UserAccount WHeRE user_name = 'admin'
+                   85 Query     SELECT tag_id, UserAccount.user_id, UserAccount.user_name, UserAccount.user_password_hash, UserAccount.ud
+                   86 Quit
+                   85 Query     SELECT varname, varvalue FROM UserConfig WHERE user = 'admin'
+                   85 Quit
+                   87 Connect   root@localhost on racktables
+                   87 Query     set names 'utf8'
+                   87 Query     SELECT varname, varvalue, vartype, is_hidden, emptyok, description, is_userdefined FROM Config ORDER BY e
+                   87 Query     select script_text from Script where script_name = 'RackCodeCache'
+                   87 Query     select id, parent_id, tag, entity_realm as realm, count(entity_id) as refcnt from TagTree left join TagSg
+                   87 Query     SELECT user_id FROM UserAccount WHeRE user_name = 'admin'
+                   87 Query     SELECT tag_id, UserAccount.user_id, UserAccount.user_name, UserAccount.user_password_hash, UserAccount.ud
+                   87 Query     SELECT varname, varvalue FROM UserConfig WHERE user = 'admin'
+                   87 Quit
+

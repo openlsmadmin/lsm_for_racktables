@@ -1,0 +1,757 @@
+<?php
+class switches extends CI_Controller {
+	
+	//$switchclass=NULL;
+	
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->model('switches_model');
+		$this->load->model('racktables_model');
+		$this->load->helper('url');
+		$this->load->helper('form');
+		$_locations;
+	}
+	
+	
+	//TODO:  jlee - move this curl routine into a new CI helper 
+	public function curl($url){
+	  //echo 'in the routine';
+	    $ch=curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    $data=curl_exec($ch);
+	    curl_close($ch);
+	    return $data;
+	  }
+	
+
+	public function details()
+	{
+	
+		$seg3=$this->uri->segment(3);
+		
+		$data['switchDetails']=$this->racktables_model->get_switch_details($seg3);
+		//print_r($data['switchDetails']['IPV4']);
+
+		//extract DNS name
+		$data['dnsName'] = $data['switchDetails']['main'][0]['name'];
+		
+		//extract FQDN Name		
+		if ( isset( $data['switchDetails']['FQDN'][0]['string_value'] ) ) {
+		    $data['FQDN'] = $data['switchDetails']['FQDN'][0]['string_value'];
+		}
+					
+		$data['objectid'] = $seg3;
+
+		//call our home grown API to look up the hardware model name based on number provided.
+		//TODO:  jee - add some asserts to check if we have arguments we need in the URL.
+
+		if (isset($data['switchDetails']['hardwaredetails'][0]['hardwaremodel'])) {
+		    $hardwaremodel = $data['switchDetails']['hardwaredetails'][0]['hardwaremodel'];
+
+		} 
+		else {
+		    $hardwaremodel = NULL;		    
+		}
+
+		//we have hardwaremodel, we know how to connect to it, and we have the FQDN
+		if (isset($hardwaremodel) and $this->switches_model->isthissupported($hardwaremodel) and isset($data['FQDN'])) {
+		  $data['connectable']=true;		
+		}
+		else {
+		//	echo 'i cannot connect';
+		  $data['connectable']=false;		
+		}
+		
+		$data['hardwaremodel'] = $hardwaremodel;
+
+		//Oct 29. 2012 - build list of linked ports.  If you find "SW" or "RTR" in label field, lock it down.
+		$portsToLock = array();
+		foreach ($data['switchDetails']['ports'] as $port)
+	        {
+		      //echo "label value is: ". $port['label'];
+		      if (  (isset($port['label'])) and ((strrpos($port['label'], "SW") !== false) || (strrpos($port['label'], "RTR") !== false) )  )
+		      {
+			      //build array
+			      array_push($portsToLock, $port['name']);
+		      }
+ 			
+	        }
+		$data['portsToLock'] = $portsToLock;
+		//end Oct 29.
+	
+	        //which view do we load?
+	        if (strpos(strtoupper($hardwaremodel),"PROCURVE") !== false)
+	        {
+		    //hp procurve view should be loaded
+		    $data['main_content']='hpobjectdetails';
+		}
+		elseif (strpos(strtoupper($hardwaremodel),"CISCO") !== false)
+		{
+		    //hp procurve view should be loaded
+		    $data['main_content']='ciscoobjectdetails';		
+		}
+		//load view.
+		$this->load->view('includes/template', $data);		
+	    
+	}//details
+	      	
+	public function macaddresses()
+	{
+		//grab URI data
+		$seg7 = $this->uri->segment(7);
+		$seg4 = $this->uri->segment(4);
+		//pass the IP and hardware model name to backend. 
+// 		if ( $this->switches_model->get_macaddresses($this->uri->segment(7), $this->uri->segment(4)) )
+		if ( $this->switches_model->get_macaddresses( $seg7,$seg4 ))
+		{
+		      $data['macaddresses'] = $this->switches_model->data();
+		      $data['ip'] = $this->uri->segment(3); //save the IP address for display
+		      $data['objectid'] = $this->uri->segment(5);  // save objectid for hyperlink back to object details page.
+		      $data['dnsName'] = $this->uri->segment(6); //save dsn name for display
+		      $data['hardwaremodel'] = $seg4;
+		      $data['FQDN'] = $seg7; //save fully qualified domain name for display	
+		      
+		      //which view do we load?
+		      if (strpos(strtoupper($data['hardwaremodel']),"PROCURVE") !== false)
+		      {
+			  //hp procurve view should be loaded
+			  $data['main_content']='hpmacaddresses';
+		      }
+		      elseif (strpos(strtoupper($data['hardwaremodel']),"CISCO") !== false)
+		      {
+			  //hp procurve view should be loaded
+			  $data['main_content']='ciscomacaddresses';		
+		      }
+		      //load view.
+		      $this->load->view('includes/template', $data);			  
+		}
+		else
+		{
+		      show_error($this->switches_model->errormessage() );
+		}
+		
+	
+	
+	}//macaddresses
+	
+	public function logs()
+	{
+	    if ( $this->switches_model->get_logs($this->uri->segment(7), $this->uri->segment(4)) )  {
+		$data['logcontents']=$this->switches_model->data();		
+		$data['ip'] = $this->uri->segment(3); //save the IP address for display
+		$data['dnsName'] = $this->uri->segment(6); //save dsn name for display
+		$data['FQDN'] = $this->uri->segment(7); //save fully qualified domain name for display
+		$data['objectid'] = $this->uri->segment(5);  // save objectid for hyperlink back to object details page.
+		$data['main_content']='logs';
+		$this->load->view('includes/template', $data);
+	    }
+	    else {
+	    	show_error($this->switches_model->errormessage() );
+	    }
+	
+	}//logs
+	
+ 	public function allportsstatus()
+ 	{ 
+	      //grab URI segments and save.  Only for the ones that we need to call repeatedly. 
+	      
+	      $seg7 = $this->uri->segment(7);
+	      $seg4 = $this->uri->segment(4);
+	      $seg5 = $this->uri->segment(5);
+	      
+	      //get all ports & their status.
+ 	      if ($this->switches_model->get_portstatusall($seg7,$seg4) )
+ 	      {		 
+		  $data['listofports'] = $this->switches_model->data();
+ 	      }
+ 	      else 
+ 	      {		
+		  show_error($this->switches_model->errormessage());		 
+ 	      }
+ 	      
+ 	      //get list of locked ports using Object ID
+//  	      $data['portsToLock'] = $this->racktables_model->get_locked_ports($this->uri->segment(5));
+	      $data['portsToLock'] = $this->racktables_model->get_locked_ports($seg5);
+	      if (! $data['portsToLock'])
+ 	      {		
+		  show_error($this->switches_model->errormessage());		 
+ 	      }	   
+
+ 	      $data['hardwaremodel'] = $seg4;
+ 	      $data['ip'] = $this->uri->segment(3); //save the IP address for display
+ 	      $data['objectid'] = $seg5; 
+ 	      $data['dnsName'] = $this->uri->segment(6); //save dsn name for display
+ 	      $data['FQDN'] = $seg7; //save fully qualified domain name for display 
+	      // save objectid for hyperlink back to object details page.
+	      //which view do we load?
+	      
+ 	      if (strpos(strtoupper($data['hardwaremodel']),"PROCURVE") !== false)
+ 	      { 		
+ 		 $data['main_content']='hpallportsstatus';
+ 	      }
+ 	      elseif (strpos(strtoupper($data['hardwaremodel']),"CISCO") !== false)
+ 	      { 		 
+ 		  $data['main_content']='ciscoallportsstatus';	
+ 	      }
+ 	      //load view.	      ;
+ 	      $this->load->view('includes/template', $data);	
+	      
+ 	}//allportsstatus	
+
+	
+	public function portstatus()
+	{
+		$seg8 = $this->uri->segment(8);
+		$seg4 = $this->uri->segment(4); 
+		$seg5 = $this->uri->segment(5);
+		
+// 	       if ( $this->switches_model->get_portstatus($this->uri->segment(8),$this->uri->segment(4), $this->uri->segment(5)) )
+	      if ( $this->switches_model->get_portstatus($seg8,$seg4,$seg5) )
+	       {
+		    $data['portstatus']=$this->switches_model->data();
+		    
+		    $data['ip'] = $this->uri->segment(3); //save the IP address for display
+		    $data['hardwaremodel'] = $seg4; 
+		    $data['portnumber'] = $seg5; //save the port number for display
+		    $data['objectid'] = $this->uri->segment(6);
+		    $data['dnsName'] = $this->uri->segment(7);
+		    $data['FQDN'] = $seg8;
+		    
+		    //which view do we load?
+		    if (strpos(strtoupper($data['hardwaremodel']),"PROCURVE") !== false)
+		    {
+			//hp procurve view should be loaded
+			$data['main_content']='hpportstatus';
+		    }
+		    elseif (strpos(strtoupper($data['hardwaremodel']),"CISCO") !== false)
+		    {
+			//hp procurve view should be loaded
+			$data['main_content']='ciscoportstatus';	
+		    }
+		    //load view.
+		    $this->load->view('includes/template', $data);	
+		}
+		else
+		{
+		    show_error($this->switches_model->errormessage());
+		}
+		
+	}//portstatus
+	
+	
+	/* toggles the port from enabled to disabled and visa versa.  Return the port interface details 
+	    as a result.
+	*/
+	public function changeportstatus()
+	{	print 'imn here';			
+		$seg4 = $this->uri->segment(4);
+		$seg5 = $this->uri->segment(5);
+		$seg6 = $this->uri->segment(6);
+		$seg7 = $this->uri->segment(7);
+		$seg9 = $this->uri->segment(9);
+		
+		$data['ip'] = $this->uri->segment(3); //save the IP address for display
+		$data['dnsName'] = $this->uri->segment(8);
+		$data['hardwaremodel'] = $seg4; //save the port number for display
+		$data['portnumber'] = $seg5;
+		$data['objectid'] = $seg7;		
+	        $data['FQDN'] = $seg9; //save FQDN name for display
+	        
+		if (strtoupper($seg6) === 'YES') {
+		    //disable the port
+		    	
+		    if ( $this->switches_model->disable_port($seg9,$seg4,$seg5) )
+		    {
+		      $data['portstatus']= $this->switches_model->data(); 	
+		      print '<BR>ok1';
+		    }
+		    else 
+		    {
+		      show_error($this->switches_model->errormessage());		 
+		    }
+		    
+		}
+		elseif (strtoupper($seg6) === 'NO') {
+		    //enable the port
+		    if ( $this->switches_model->enable_port($seg9,$seg4,$seg5) )
+		    {
+		       print '<BR>ok2';
+		       $data['portstatus']=$this->switches_model->data(); 	
+		    }
+		    else
+		    {
+		      show_error($this->switches_model->errormessage());	
+		    }
+		   	
+		}
+		//requery and get fresh list of all port status. Cannot reuse existing allportsstatus method becuase the URL looks different at this point.
+		if ( $this->switches_model->get_portstatusall($seg9,$seg4 ) )
+		{
+		    $data['listofports'] = $this->switches_model->data();
+// 		    var_dump($data['listofports'] );
+		}
+		else
+		{
+		    show_error($this->switches_model->errormessage());	
+		}
+		
+		if ( $this->racktables_model->get_locked_ports($seg7) )
+		{
+		  $data['portsToLock'] = $this->switches_model->data();
+		  var_dump($data['portsToLock'] );
+		}
+		else 
+		{
+		  show_error($this->switches_model->errormessage());	
+		}
+		$data['main_content']='allportsstatus';
+		//redirect(base_url().'index.php/switches/allportsstatus/'.$data['ip'].'/'.$data['hardwaremodel'].'/'.$data['objectid'].'/'.$data['dnsName'].'/'.$data['FQDN']);
+		//$this->load->view('includes/template', $data);	    
+	}//changeportstatus
+		
+	
+	//used by cisco sf300 only - same as enabling / disabling port on HP switch
+	public function changeportadminstate()
+	{
+	     	$seg4 = $this->uri->segment(4);
+		$seg5 = $this->uri->segment(5);
+		$seg6 = $this->uri->segment(6);
+		$seg7 = $this->uri->segment(7);
+		$seg9 = $this->uri->segment(9);
+				
+		$data['ip'] = $this->uri->segment(3); //save the IP address for display
+		$data['hardwaremodel'] = $seg4; //save the port number for display
+		$data['portnumber'] = $seg5;
+		$data['objectid'] = $seg7;
+		$data['dnsName'] = $this->uri->segment(8);
+	        $data['FQDN'] = $seg9; //save FQDN name for display
+
+		if (strtoupper($seg6) === 'UP') {
+		    //disable the port
+		    $data['portstatus']=$this->switches_model->disable_port($seg9,$seg4,$seg5);	
+		}
+		elseif (strtoupper($seg6) === 'DOWN') {
+		    //enable the port
+		    $data['portstatus']=$this->switches_model->enable_port($seg9,$seg4,$seg5);	
+		}
+		//requery and get fresh list of all port status. Cannot reuse existing allportsstatus method becuase the URL looks different at this point.
+		$data['listofports'] = $this->switches_model->get_portstatusall($seg9,$seg4 );	     
+		$data['portsToLock'] = $this->racktables_model->get_locked_ports($seg7); //get locked ports using object ID
+
+		$data['main_content']='ciscoallportsstatus';
+		$this->load->view('includes/template', $data);	    
+	}//changeportadminstate	
+	
+	
+	/* change vlan 	    
+	      query swtich for list of vlans it currently knows about. 
+	      diplay on screen for selection. 	    
+	*/
+	public function changeportvlan()
+	{  
+		$seg4 = $this->uri->segment(4); 
+		$seg5 = $this->uri->segment(5);
+		$seg8 = $this->uri->segment(8);
+		
+		$data['dnsname'] = $this->uri->segment(3); //save the IP address for display
+		$newVlan = $this->uri->segment(6);
+		$mode = $this->uri->segment(7); //may be blank if the switch is of type CISCO
+		$data['hardwaremodel'] = $seg4; //hardware name.
+		$data['portname'] = $seg5; //save the port number for display
+		$data['FQDN'] = $seg8; //save the port number for display			    	
+	    	
+	    	$result = $this->switches_model->change_port_vlan($seg8, $seg4, $seg5, $newVlan, $mode);
+	    	
+		//TODO:  assert to ensure that you have all segments you need in the URL;
+		if ($result !== false && $result !== "ACCESS")
+		{
+			$resultdata = array(
+			'status' => true,
+			'error_msg'=>'',
+			'data' => $result
+			);
+		}
+		elseIf ($result == "ACCESS")
+		{		 
+			$resultdata = array(
+			'status' => false,
+			'error_msg'=> 'Port mode must be ACCESS',
+			'data' =>''
+			);
+
+		}		
+		header ('Content-Type: application/json; charset=UTF-8');		
+		echo json_encode($resultdata);			
+	}// end changeportvlan
+
+	public function deleteportvlan()
+	{
+	      $seg4 = $this->uri->segment(4);
+	      $seg5 = $this->uri->segment(5);
+	      $seg6 = $this->uri->segment(6);  
+	      $seg7 = $this->uri->segment(7);
+	      $seg8 = $this->uri->segment(8);
+	      	      
+	      $data['ip'] = $this->uri->segment(3); //save the IP address for display
+	      $data['hardwaremodel'] = $seg4; //hardware name.
+	      $data['portname'] = $seg5; //save the port number for display
+	      $data['vlanid'] = $seg6; //save the port number for display
+	      $data['mode'] = $seg7;
+	      $data['FQDN'] = $seg8;
+
+	      $result = $this->switches_model->delete_port_vlan($seg8, $seg4, $seg5,  $seg6,  $seg7);		
+	    
+	      if ($result !== false) 
+	      {
+		    $resultdata = array(
+		      'status' => true,
+		      'error_msg' =>'',
+		      'data' => $result
+		      );
+	      }
+	      else 
+	      {
+		    $resultdata = array(
+		      'status' => false,
+		      'error_msg' =>'Unable to delete port vlan. Contact Administrator.',
+		      'data' => false
+		      );		  
+	      }
+	      header ('Content-Type: application/json; charset=UTF-8');
+	      echo json_encode($resultdata); 	      
+	}
+	
+	public function showportvlan()
+	{
+	      $seg4 = $this->uri->segment(4);
+	      $seg5 = $this->uri->segment(5);
+	      $seg8 = $this->uri->segment(8);	
+
+	      $data['ip'] = $this->uri->segment(3); //save the IP address for display
+	      $data['objectid'] = $this->uri->segment(6); //save the object id for hyperlink back to main object details page
+	      $data['dnsName'] = $this->uri->segment(7); //save dsn name for display	      
+	      $data['hardwaremodel'] = $seg4; //save the hardware model name display
+	      $data['portname'] = $seg5; //save the port number for display
+	      $data['FQDN'] = $seg8; //save fully qualified domain name for display
+	     
+	      if ($this->switches_model->show_port_vlan($seg8,$seg4,$seg5) )
+	      {
+		  $data['portvlan'] = $this->switches_model->data();		  	      	      
+		  //which view do we load?
+		  if (strpos(strtoupper($data['hardwaremodel']),"PROCURVE") !== false)
+		  {
+		      //hp procurve view should be loaded
+		      $data['main_content']='hpchangeportvlan';
+		  }
+		  elseif (strpos(strtoupper($data['hardwaremodel']),"CISCO") !== false)
+		  {
+		      //hp procurve view should be loaded
+		      $data['main_content']='ciscochangeportvlan';	
+		  }
+		  //load view.
+		  $this->load->view('includes/template', $data);
+	      }
+	      else
+	      {
+		  show_error($this->switches_model->errormessage());
+	      }
+	}
+	
+	public function showknownvlans()
+	{
+	      $vlans=$this->switches_model->show_known_vlans($this->uri->segment(5), $this->uri->segment(4));
+	      header ('Content-Type: application/json; charset=UTF-8');
+	      echo json_encode($vlans);  
+	   
+	}//changeportstatus	
+	
+	
+	public function changeduplexsettings()
+	{	
+	      $data['ip'] = $this->uri->segment(3); //save the IP address for display
+	      $data['hardwaremodel'] = $this->uri->segment(4); //save the hardwaremodel for display
+	      $data['portname'] = $this->uri->segment(5); //save the port number for display
+	      $data['objectid'] = $this->uri->segment(6); //save objectID
+	      $data['dnsName'] = $this->uri->segment(7); //dnsName
+	      $data['FQDN'] = $this->uri->segment(8); //FQDN
+
+	      //which view do we load?
+	      if (strpos(strtoupper($data['hardwaremodel']),"PROCURVE") !== false)
+	      {
+		  //hp procurve view should be loaded
+		  $data['main_content']='hpnewduplexsetting';
+	      }
+	      elseif (strpos(strtoupper($data['hardwaremodel']),"CISCO") !== false)
+	      {
+		  //hp procurve view should be loaded
+		  $data['main_content']='cisconewduplexsetting';	
+	      }
+	      //load view.
+	      $this->load->view('includes/template', $data);	
+      
+	}	
+	
+	
+	public function assignduplex()
+	{
+
+	    $seg4 = $this->uri->segment(4); 
+	    $seg5 = $this->uri->segment(5);
+	    $seg7 = $this->uri->segment(7);
+	    $seg8 = $this->uri->segment(8);
+	    
+	    $data['ip'] = $this->uri->segment(3); 
+	    $data['dnsName'] = $this->uri->segment(6);   
+	    $data['hardwaremodel'] = $seg4; 
+	    $data['portname'] = $seg5; 
+	    $data['FQDN'] = $seg7;
+	    $data['objectid'] = $seg8; 
+
+	    $data['duplexresults'] = $this->switches_model->changeduplex($seg7, $seg4, $seg5, $this->input->post('duplex'));		
+	    $data['listofports'] = $this->switches_model->get_portstatusall($seg7,$seg4);	     
+	    var_dump($data['listofports']);
+	    $data['portsToLock'] = $this->racktables_model->get_locked_ports($seg8); 
+
+	      //which view do we load?
+	      if (strpos(strtoupper($data['hardwaremodel']),"PROCURVE") !== false)
+	      {
+		  //hp procurve view should be loaded
+		  $data['main_content']='hpallportsstatus';
+	      }
+	      elseif (strpos(strtoupper($data['hardwaremodel']),"CISCO") !== false)
+	      {
+		  //hp procurve view should be loaded
+		  $data['main_content']='ciscoallportsstatus';	
+	      }
+	      //load view.
+	      $this->load->view('includes/template', $data);	 	
+	    	
+	}
+
+	public function indicatorlight()
+	{
+	    
+	      $data['ip'] = $this->uri->segment(3); //save the IP address for display
+	      $data['hardwaremodel'] = $this->uri->segment(4); //save the hardware model name.	
+	      
+	      $functionName = 'chassisLight';
+	      switch(trim($this->uri->segment(5)))
+	      {
+		  case 1: $functionName .= 'On'; break;
+		  case 0: $functionName .= 'Off'; break;
+		  case 2: $functionName .= 'Blink'; break;
+	      }
+	      if ($this->switches_model->$functionName($this->uri->segment(8), $this->uri->segment(4)))
+	      {
+		  $data['light'] = $this->switches_model->data();
+		  redirect(base_url().'index.php/switches/details/'.$this->uri->segment(6));
+	      }
+	      else
+	      {
+		  show_error($this->switches_model->errormessage());
+	      }	
+	}
+	
+	public function poeOn()
+	{
+		$seg4 = $this->uri->segment(4); 
+		$seg5 = $this->uri->segment(5);
+		$seg6 = $this->uri->segment(6);
+		
+		$data['dnsName'] = $this->uri->segment(3); //save the IP address for display
+		$data['hardwaremodel'] = $seg4; //save the hardware model name.
+		$data['portname'] = $seg5; //save the port number for display	
+		$data['FQDN'] = $seg6; //save the fqdn for display	   
+		if ( $this->switches_model->poeOn($seg6,$seg4, $seg5) ) 
+		{
+		    $poeStatus = $this->switches_model->data();	
+		    echo $poeStatus;
+		}     
+ 		else
+		{
+		    show_error($this->switches_model->errormessage());
+		}           
+	}//poeOn
+	
+	public function poeOff()
+	{
+		$seg4 = $this->uri->segment(4); 
+		$seg5 = $this->uri->segment(5);
+		$seg6 = $this->uri->segment(6);
+		
+		$data['dnsName'] = $this->uri->segment(3); //save the IP address for display
+		$data['hardwaremodel'] = $seg4; //save the hardware model name.
+		$data['portname'] = $seg5; //save the port number for display
+		$data['FQDN'] = $seg6; //save the fqdn for display	
+		if ( $this->switches_model->poeOff($seg6,$seg4, $seg5) )
+		{
+		    $poeStatus = $this->switches_model->data();	
+		    echo $poeStatus;
+		}
+		else
+		{
+		    show_error($this->switches_model->errormessage());
+		}				
+	}//poeOff
+	
+	public function showPoeStatus()
+	{
+		$seg4 = $this->uri->segment(4); 
+		$seg5 = $this->uri->segment(5);
+		$seg8 = $this->uri->segment(8);	
+		$data['ip'] = $this->uri->segment(3); //save the IP address for display
+		$data['objectid'] = $this->uri->segment(6); //save the object id for hyperlink back to main object details page
+		$data['dnsName'] = $this->uri->segment(7); //save dnsName for display
+		
+		$data['hardwaremodel'] = $seg4; //save the hardware model name.
+		$data['portname'] = $seg5; //save the port number for display	   
+		$data['FQDN'] = $seg8; //save dnsName for display
+		if ($this->switches_model->showPoeStatus($seg8,$seg4, $seg5) )
+		{
+		    $data['poeStatus'] = $this->switches_model->data();
+		    $data['main_content']='poestatus';
+		    $this->load->view('includes/template', $data);	      	
+		}
+		else
+		{
+		    show_error($this->switches_model->errormessage());
+		}
+	}
+
+	public function getbranches()
+	{
+		//this method will return all locations; branches, buildings and rooms.  Just parse out
+		//the branches.
+		$branches=array();
+		$_locations = $this->racktables_model->get_locations();	
+
+		foreach ($_locations as $location)
+		{
+			if ((isset($location['L1ID'])) && (!array_key_exists($location['L1ID'],$branches))) {
+			
+				$branches[$location['L1ID']] = $location['L1Location'];			
+			}
+		}
+		$data['branches'] = $branches;
+		$data['title'] = "Show Location:";
+		$data['main_content']='switchesbylocation';
+		$this->load->view('includes/template', $data);
+	}
+
+	public function getbuildings()
+	{	
+		$buildings = array();
+		$branchID = $this->uri->segment(3);
+		$buildingforbranch = array();
+		$_locations = $this->racktables_model->get_locations();	
+		//print_r($_locations);
+
+		foreach ($_locations as $location)
+		{
+			if ((isset($location['L2FullID'])) && (!array_key_exists($location['L2FullID'],$buildings))) {
+				$buildings[$location['L2FullID']] = $location['L2Location'];			
+			}
+		}
+
+		foreach ($buildings as $key => $value)
+		{			
+			$pattern = "/(".$branchID."\.\d)/i";			
+			if (preg_match($pattern,$key))
+			{
+				$buildingforbranch[(string)$key] = $value;
+			}
+
+		}		
+
+		header ('Content-Type: application/json; charset=UTF-8');
+      		echo json_encode($buildingforbranch);  
+	}
+
+	public function getrooms()
+	{ 
+		
+		$rooms = array();
+		$roomsinbuilding=array();
+
+		$locationDetails = $this->uri->segment(3); //has both branch and buildilng id built in.  Eg) 2.5
+
+		$locationDetails = explode('.',(string)$locationDetails);
+
+		$_locations = $this->racktables_model->get_locations();	
+
+		foreach ($_locations as $location)
+		{
+			
+			if ((isset($location['L3FullID'])) && (!array_key_exists($location['L3FullID'],$rooms))) {
+				$rooms[$location['L3FullID']] = $location['L3Location'];			
+			}
+		}	
+
+		foreach ($rooms as $key => $value)
+		{
+			$pattern = "/(".$locationDetails[0].".".$locationDetails[1]."."."\d)/i";
+			
+			if (preg_match($pattern,$key))
+			{
+				$roomsinbuilding[(string)$key] = $value;
+			}
+
+		}	
+		header ('Content-Type: application/json; charset=UTF-8');	
+  		echo json_encode($roomsinbuilding);  
+
+
+	}//end getrooms.
+
+    public function getallswitches()
+	{
+		$switches = $this->racktables_model->get_all_switches();	
+		header ('Content-Type: application/json; charset=UTF-8');	
+  		echo($switches);  
+
+	}		
+
+	public function getswitchesbylocation()
+	{
+		
+	    $branch_id = $this->uri->segment(3); // returns false if not set.
+	    if(!$branch_id){
+        	redirect('error_page');//$this->load->helper('url') must be loaded in order for redirect to work. 
+	    }
+
+	    //TODO:  Check if we want to even allow this feature to retrieve all. Or force to always have a branch.
+	    if ($branch_id == 9999)
+	    {
+		    $data = $this->getallswitches();
+	    }
+	    else
+	    {
+		$building_id = $this->uri->segment(4); //Ok if false. 
+		    $room_id = $this->uri->segment(5);
+			    //call get_switches by location
+			    $data=$this->racktables_model->get_switches_by_location($branch_id, $building_id, $room_id);	
+	    }
+	    
+	    header ('Content-Type: application/json; charset=UTF-8');
+	    echo ($data);  //data will already be encoded as json.  just echo it!
+	}
+
+	public function test()
+	{
+	    $mydata = array(
+	      'VlanID'=>80,
+	      'Name'=>'test vlan'
+	    );
+	    
+	   $data = array(
+	      'status'=> true,
+	      'error_msg'=>'all is well',
+	      'data'=> $mydata
+	   );
+	    header ('Content-Type: application/json; charset=UTF-8');
+	    echo json_encode($data);  //data will already be encoded as json.  just echo it!
+	   
+	}
+}

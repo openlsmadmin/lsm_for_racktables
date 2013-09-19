@@ -1,0 +1,247 @@
+
+<div class="row-fluid">		
+	  <div class="span12">
+	  
+	  <h2>Port VLANS Details: Port <?php echo $portname.' on switch '.$dnsName;?></h2>
+	  <?php echo anchor("switches/details/".$objectid,"Switch Details Page")?>
+	  <p><p>
+		  <!--<input type='button' class='btn btn-info' value='Change VLAN' id='changevlan' /> -->
+		  <!-- <input type='button' class='btn btn-info' value='Show me a list of Vlans'/> -->
+		  <table class="table table-bordered table-striped"  id="assignedvlans">
+		  <thead>
+			  <tr>
+			  	  <!--<th>Select Row:</th>-->
+				  <th>VlanId</th>
+				  <th>Name</th>
+				  <th>Status</th>
+				  <th>Voice</th>
+				  <th>Jumbo</th>
+				  <th>Mode</th>
+				  <th>&nbsp;</th>
+			  </tr>
+		  </thead>
+		  <tbody>
+			  
+			  <?php foreach ($portvlan as $vlandetail): ?>
+			      <tr>			
+			      <!--<td><input type="checkbox" name="<?php echo $vlandetail['VlanId']?>" value="<?php echo $vlandetail['VlanId']?>" class="checkbox"></td>  	-->		
+
+				  <td class ='vlanid'><?php echo $vlandetail['VlanId'] ?></td>
+				  <td><?php echo $vlandetail['Name'] ?></td>
+				  <td><?php echo $vlandetail['Status'] ?></td>
+				  <td><?php echo $vlandetail['Voice'] ?></td>
+				  <td><?php echo $vlandetail['Jumbo'] ?></td>
+				  <td class='vlanmode'><?php echo $vlandetail['Mode'] ?></td>
+				  <td><button class='btn deleteBtn'>Delete</button></td>
+				</tr>
+			  <?php endforeach ?>
+			  
+		  </tbody>
+		  </table>
+		  
+		  <button class="btn" id="modifyVLANS">Modify VLANS</button>
+		  <!-- add some hidden controls for use in javascript -->
+		  <input type="hidden" id="ip" value="<?php echo $ip ?>"/>
+		  <input type="hidden" id="hardwaremodel" value="<?php echo $hardwaremodel ?>"/>
+		  <input type="hidden" id="port" value="<?php echo $portname ?>"/>
+		  <input type="hidden" id="objectid" value="<?php echo $objectid ?>"/>
+		  <input type="hidden" id="dnsName" value="<?php echo $dnsName ?>"/>
+		  <input type="hidden" id="FQDN" value="<?php echo $FQDN ?>"/>
+	  </div>
+  	 <div class="span12" id="progress-indicator" style="text-align:center">
+  	 	<p>
+             <img src="<?php echo base_url();?>assets/img/wip.gif"> Retrieving vlans...</img>
+      </div>	
+	  <div class="span12" id="availableVlansAjaxContainer"></div>
+	  <div class="span12" id="newvlandata"></div>
+ 
+</div>	  
+
+
+    <script>
+    
+    $(document).ready(function(){
+    
+	    //hide the please wait div by default.
+	    
+	    $('#progress-indicator').hide();
+	     
+	    	    
+	    $('#updateVlan').live('click', function()  {
+
+			    $('#progress-indicator').html("<img src='" + BASEPATH + "assets/img/wip.gif' /> Saving vlans...</img>");
+			    $('#progress-indicator').fadeIn();			    	
+
+	    		//grab data from user input
+		    	var modeForVlanToAdd = $('#newvlanmode').val();
+		    	var IdforVlanToAdd = $('#newVlanID').val();
+
+				var fullpath = BASEPATH + 'index.php/switches/changeportvlan/' +  $('#dnsName').val() + '/' + $('#hardwaremodel').val() + '/' + $('#port').val() + '/' + IdforVlanToAdd + '/' + modeForVlanToAdd + '/' + $('#FQDN').val();
+		
+				//console.log(fullpath);
+			    $.ajax({
+						    url:fullpath,
+						    type:'POST',
+						    dataType:'json',
+						    success: function(returnDataFromController) {
+
+						    		//alert(returnDataFromController);
+						    		//build table contents 
+									var htmlstring = '<thead>';  
+									htmlstring = htmlstring + '<tr>';
+									htmlstring = htmlstring + '<th>VlanId</th>';
+									htmlstring = htmlstring + '<th>Name</th>';
+									htmlstring = htmlstring + '<th>Status</th>';
+									htmlstring = htmlstring + '<th>Voice</th>';
+									htmlstring = htmlstring + '<th>Jumbo</th>';
+									htmlstring = htmlstring + '<th>Mode</th>';
+									htmlstring = htmlstring + '<th>&nbsp;</th>';
+									htmlstring = htmlstring + '</tr>';
+									htmlstring = htmlstring + '</thead>';
+									htmlstring = htmlstring + '<tbody>';
+				  
+									//loop through results from ajax call and build table.  
+									for(i = 0; i < returnDataFromController.length; i++) {
+										  //alert(returnDataFromController[i].VlanId);
+										  htmlstring = htmlstring + "<tr>"
+										  htmlstring = htmlstring + "<td class ='vlanid'>" + returnDataFromController[i].VlanId + "</td>";
+										  htmlstring = htmlstring + "<td>" + returnDataFromController[i].Name + "</td>";
+										  htmlstring = htmlstring + "<td>" + returnDataFromController[i].Status + "</td>";
+										  htmlstring = htmlstring + "<td>" + returnDataFromController[i].Voice +"</td>";
+										  htmlstring = htmlstring + "<td>" + returnDataFromController[i].Jumbo + "</td>";
+										  htmlstring = htmlstring + "<td class ='vlanmode'>" + returnDataFromController[i].Mode +"</td>";
+										  htmlstring = htmlstring + "<td><button class='btn deleteBtn'>Delete</button></td>";
+										  htmlstring = htmlstring + "</tr>";	
+								  
+							      	}//end loop
+								   htmlstring = htmlstring + "</tbody>";
+								   htmlstring = htmlstring + "</table>";
+
+						    	 $('#assignedvlans').html(htmlstring);
+ 								 $('#progress-indicator').hide();
+
+						    }// end success
+
+			    });//end ajax.
+			
+				
+				
+	    });
+		
+		//notice that you are referencing the delete button by class name. 
+		//bad design to have same ID name for multiple objects.  So referencing it by class instead.
+	    $('.deleteBtn').live('click', function()  {
+
+		
+	    			//get a count of all records. only allowed to delete if you have more than one vlan.
+	    			var vlancount = $('#assignedvlans tbody tr').length;
+
+	    			if (vlancount > 1)
+	    			{
+							
+							$('#progress-indicator').html("<img src='" + BASEPATH + "assets/img/wip.gif' /> deleting vlan...</img>");
+						    $('#progress-indicator').fadeIn();								
+						   // var currentVlanid = $(this).closest('.vlanid').val();	
+						    var userSelectionVlandId  = $(this).parent().siblings('.vlanid').text();	
+						    var modeForVlanToDelete = $(this).parent().siblings('.vlanmode').text();
+						    //alert(userSelectionVlandId);
+
+							var fullpath = BASEPATH + 'index.php/switches/deleteportvlan/' +  $('#dnsName').val() + '/' + $('#hardwaremodel').val() + '/' + $('#port').val() + '/' + userSelectionVlandId + '/' + modeForVlanToDelete + '/' + $('#FQDN').val();
+							console.log(fullpath);
+							$.ajax({
+								    url:fullpath,
+								    type:'POST',
+								    dataType:'json',
+								    success: function(returnDataFromController) {
+										    	//alert(returnDataFromController);
+										    		console.log(returnDataFromController);
+										    		//build table contents 
+													var htmlstring = '<thead>';  
+													htmlstring = htmlstring + '<tr>';
+													htmlstring = htmlstring + '<th>VlanId</th>';
+													htmlstring = htmlstring + '<th>Name</th>';
+													htmlstring = htmlstring + '<th>Status</th>';
+													htmlstring = htmlstring + '<th>Voice</th>';
+													htmlstring = htmlstring + '<th>Jumbo</th>';
+													htmlstring = htmlstring + '<th>Mode</th>';
+													htmlstring = htmlstring + '<th>&nbsp;</th>';
+													htmlstring = htmlstring + '</tr>';
+													htmlstring = htmlstring + '</thead>';
+													htmlstring = htmlstring + '<tbody>';
+								  
+													//loop through results from ajax call and build table.  
+													for(i = 0; i < returnDataFromController.length; i++) {
+														  //alert(returnDataFromController[i].VlanId);
+														  htmlstring = htmlstring + "<tr>"
+														  htmlstring = htmlstring + "<td class ='vlanid'>" + returnDataFromController[i].VlanId + "</td>";
+														  htmlstring = htmlstring + "<td>" + returnDataFromController[i].Name + "</td>";
+														  htmlstring = htmlstring + "<td>" + returnDataFromController[i].Status + "</td>";
+														  htmlstring = htmlstring + "<td>" + returnDataFromController[i].Voice +"</td>";
+														  htmlstring = htmlstring + "<td>" + returnDataFromController[i].Jumbo + "</td>";
+														  htmlstring = htmlstring + "<td class='vlanmode'>" + returnDataFromController[i].Mode +"</td>";
+														  htmlstring = htmlstring + "<td><button class='btn deleteBtn'>Delete</button></td>";
+														  htmlstring = htmlstring + "</tr>";	
+												  
+											      	}//end loop
+
+												   htmlstring = htmlstring + "</tbody>";
+												   htmlstring = htmlstring + "</table>";
+
+										    	 $('#assignedvlans').html(htmlstring);
+										    	$('#progress-indicator').hide();	
+								      }//end success ajax call
+
+						    });//end ajax.						    					 
+	    			}
+	    			else
+	    			{	//console.log('asdf');
+	    				alert("Port must have at least one vlan!");
+	    			}
+	    			 
+	    });	    
+
+	    //query and show list of vlans.
+	    $('#modifyVLANS').click(function()  {
+			    // alert('in the click');
+				//disbled button until ajax request is done. 
+				$(this).attr("disabled","disabled");
+				$('#progress-indicator').html("<img src='" + BASEPATH + "assets/img/wip.gif' /> Retrieving vlans...</img>");
+			    $('#progress-indicator').fadeIn();
+				$.ajax({				  
+				  url:'<?php echo site_url('switches/showknownvlans/'.$dnsName.'/'.$hardwaremodel.'/'.$FQDN);?>',
+				  type:'POST',
+				  dataType:'json',
+				  success: function(returnDataFromController) {
+				      //alert(returnDataFromController.length);
+				      //console.log(returnDataFromController);
+				      var htmlstring;
+				      var newVlanHTML;
+				      htmlstring = "<br><br><B>To reassign the port to a new vlan, click on a VlanId below and then click on the <u>Add Vlan</u> button below.</B><br><table class='table table-bordered table-striped'>";
+				      htmlstring = htmlstring + "<th>VlanId</th><th>Name</th>";
+				      
+				      //loop through results
+				      for(i = 0; i < returnDataFromController.length; i++) {
+							  //alert(returnDataFromController[i].VlanId);
+							  htmlstring = htmlstring +  "<tr><td><a href=>"+returnDataFromController[i].VlanId+"</a></td><td>"+ returnDataFromController[i].Name+"</td></tr>";						  
+				      }
+				      //note:  adding onClick='return false;' to the delete button allows us to put it inside the form, without have it 
+				      //trigger the submit.  this way the delete button shows up beside the add button, instead of below.
+				      newVlanHTML = "<input type='text' name='newVlanID' id='newVlanID' style='width:5em;height:1.5em'/>&nbsp;&nbsp;<select name='newvlanmode' id='newvlanmode'><option value='untagged'>untagged</option><option selected value='tagged'>tagged</option></select>&nbsp;&nbsp;<button type='submit' class='btn' name='updateVlan' id='updateVlan' style='width:10em;height:2em'>Add Vlan</button>";
+				      //alert(newVlanHTML);
+				      $('#availableVlansAjaxContainer').html(htmlstring);
+				      $('#newvlandata').html(newVlanHTML);						
+				      $('#progress-indicator').hide();
+				     }//end success
+			      }); //end ajax call
+			      $(this).removeAttr("disabled");
+	    });
+      
+	      //adding a click event handler to the list of vlans.  populate the textbox with the value of vlan that is selected.    
+	    $("#availableVlansAjaxContainer").delegate("td:first-child a", "click", function(ev) {
+				ev.preventDefault();
+				$("#newVlanID").val($(this).text());
+	    });
+	    
+
+  }); 
+    </script>

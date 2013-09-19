@@ -1,0 +1,44 @@
+ORIGINAL SQL:
+ 
+SELECT tag_id, RackObject.id, RackObject.name, RackObject.label, RackObject.asset_no, RackObject.objtype_id, (SELECT rack_id FROM RackSpace WHERE object_id = RackObject.id ORDER BY rack_id ASC LIMIT 1) as rack_id, (SELECT parent_entity_id AS rack_id FROM EntityLink WHERE child_entity_type='object' AND child_entity_id = RackObject.id AND parent_entity_type = 'rack' ORDER BY rack_id ASC LIMIT 1) as rack_id_2, (select name from Rack where id = rack_id) as Rack_name, (select row_id from Rack where id = rack_id) as row_id, (select name from RackRow where id = row_id) as Row_name, (SELECT parent_entity_id FROM EntityLink WHERE child_entity_type='object' AND child_entity_id = RackObject.id AND parent_entity_type = 'object' ORDER BY parent_entity_id ASC LIMIT 1) as container_id, (SELECT name FROM RackObject WHERE id = container_id) as container_name, RackObject.has_problems, RackObject.comment, (SELECT COUNT(*) FROM Port WHERE object_id = RackObject.id) as nports, (SELECT 1 FROM VLANSwitch WHERE object_id = id LIMIT 1) as runs8021Q FROM RackObject LEFT JOIN TagStorage on entity_realm = 'object' and entity_id = RackObject.id WHERE RackObject.id = '416' ORDER BY tag_id
+
+
+
+tag_id 	id 	name 			label 		asset_no 	objtype_id 	rack_id 	rack_id_2 	Rack_name 	row_id 	Row_name 	container_id 	container_name 	has_problems 	comment 	nports 	runs8021Q
+NULL	416 	jleetestswitch123 	newlabelvalue 	this 	8 	NULL	NULL	NULL	NULL	NULL	NULL	NULL	no 		36 	NULL
+
+
+================================================ GET ATTRIBUTE LIST ====================================================================
+
+ select AM.attr_id, A.name as attr_name, A.type as attr_type, C.name as chapter_name, C.id as chapter_id, AV.uint_value, AV.float_value, AV.string_value, D.dict_value, RO.id as object_id from RackObject as RO left join AttributeMap as AM on RO.objtype_id = AM.objtype_id left join Attribute as A on AM.attr_id = A.id left join AttributeValue as AV on AV.attr_id = AM.attr_id and AV.object_id = RO.id left join Dictionary as D on D.dict_key = AV.uint_value and AM.chapter_id = D.chapter_id left join Chapter as C on AM.chapter_id = C.id WHERE RO.id IN (416) order by A.name, A.type
+
+attr_id 	attr_name 	attr_type 	chapter_name 	chapter_id 	uint_value 	float_value 	string_value 	dict_value 	object_id
+14 	contact person 	string 	NULL	NULL	NULL	NULL	NULL	NULL	416
+18 	CPU, MHz 	uint 	NULL	NULL	NULL	NULL	NULL	NULL	416
+17 	DRAM, MB 	uint 	NULL	NULL	NULL	NULL	NULL	NULL	416
+16 	flash memory, MB 	uint 	NULL	NULL	NULL	NULL	NULL	NULL	416
+3 	FQDN 	string 	NULL	NULL	NULL	NULL	NULL	NULL	416
+2 	HW type 	dict 	network switch models 	12 	50007 	NULL	NULL	HP ProCurve%GPASS%5406zl-48G 	416
+22 	HW warranty expiration 	date 	NULL	NULL	NULL	NULL	NULL	NULL	416
+1 	OEM S/N 1 	string 	NULL	NULL	NULL	NULL	NULL	NULL	416
+20 	OEM S/N 2 	string 	NULL	NULL	NULL	NULL	NULL	NULL	416
+28 	Slot number 	string 	NULL	NULL	NULL	NULL	NULL	NULL	416
+21 	support contract expiration 	date 	NULL	NULL	NULL	NULL	NULL	NULL	416
+4 	SW type 	dict 	switch OS type 	14 	NULL	NULL	NULL	NULL	416
+5 	SW version 	string 	NULL	NULL	NULL	NULL	NULL	NULL	416
+24 	SW warranty expiration 	date 	NULL	NULL	NULL	NULL	NULL	NULL	416
+
+=================================================  GET PORT LIST ==============================================================
+SELECT id, name, label, l2address, iif_id, (SELECT iif_name FROM PortInnerInterface WHERE id = iif_id) AS iif_name, (SELECT name FROM RackObject WHERE Port.object_id = RackObject.id) AS object_name, type AS oif_id, (SELECT dict_value FROM Dictionary WHERE dict_key = type) AS oif_name, reservation_comment FROM Port WHERE object_id = '416'
+
+
+id 	name 	label 	l2address 	iif_id 	iif_name 	object_name 	oif_id 	oif_name 	reservation_comment
+3080 	A1 	A 	NULL	1 	hardwired 	jleetestswitch123 	24 	1000Base-T 	NULL
+3089 	A10 	A 	NULL	1 	hardwired 	jleetestswitch123 	24 	1000Base-T 	NULL
+3081 	A2 	A 	NULL	1 	hardwired 	jleetestswitch123 	24 	1000Base-T 	NULL
+3082 	A3 	A 	NULL	1 	hardwired 	jleetestswitch123 	24 	1000Base-T 	NULL
+3083 	A4 	A 	NULL	1 	hardwired 	jleetestswitch123 	24 	1000Base-T 	NULL
+3084 	A5 	A 	NULL	1 	hardwired 	jleetestswitch123 	24 	1000Base-T 	NULL
+3085 	A6 	A 	NULL	1 	hardwired 	jleetestswitch123 	24 	1000Base-T 	NULL
+3086 	A7 	A 	NULL	1 	hardwired 	jleetestswitch123 	24 	1000Base-T 	NULL
+3087 	A8 	A 	NULL	1 	hardwired 	jleetestswitch123 	24 	1000Base-T 	NULL

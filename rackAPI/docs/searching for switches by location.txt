@@ -1,0 +1,56 @@
+select id, parent_id, tag, entity_realm as realm, count(entity_id) as refcnt from TagTree left join TagStorage on id = tag_id group by id, entity_realm order by tag
+
+
+TagStorage Table results
+
+id     parent_id     tag Ascending        realm         refcnt
+3      1             BRK                  NULL          0
+2      1             CAN                  object        1
+1      NULL          Location             NULL          0
+4      1             WKL                  NULL          0
+
+
+=====================================================================================
+
+SELECT RackObject.id, RackObject.name, RackObject.label, RackObject.asset_no, RackObject.objtype_id, (SELECT rack_id FROM RackSpace WHERE object_id = RackObject.id ORDER BY rack_id ASC LIMIT 1) as rack_id, (SELECT parent_entity_id AS rack_id FROM EntityLink WHERE child_entity_type='object' AND child_entity_id = RackObject.id AND parent_entity_type = 'rack' ORDER BY rack_id ASC LIMIT 1) as rack_id_2, (select name from Rack where id = rack_id) as Rack_name, (select row_id from Rack where id = rack_id) as row_id, (select name from RackRow where id = row_id) as Row_name, (SELECT parent_entity_id FROM EntityLink WHERE child_entity_type='object' AND child_entity_id = RackObject.id AND parent_entity_type = 'object' ORDER BY parent_entity_id ASC LIMIT 1) as container_id, (SELECT name FROM RackObject WHERE id = container_id) as container_name, RackObject.has_problems, RackObject.comment, (SELECT COUNT(*) FROM Port WHERE object_id = RackObject.id) as nports, (SELECT 1 FROM VLANSwitch WHERE object_id = id LIMIT 1) as runs8021Q FROM RackObject ORDER BY RackObject.name
+
+
+id   name            label            asset_no      objtype_id    rack_id  rack_id_2   Rack_name  row_id Row_name   container_id  container_name  has_problems   comment                     nports
+416  CAESA2-JLEE-1   newlabelvalue    this          8             NULL          NULL   NULL       NULL   NULL       NULL          NULL            no             this is a comment field.    58     
+
+=====================================================================================
+SELECT entity_id, tag_id FROM TagStorage WHERE entity_realm = 'object'
+
+entity_id     tag_id
+416             2
+
+
+TO FIND OBJECTS OF A CERTAIN LOCATION:
+===========================================
+1.  FIND ALL LOCATIONS - DISPLAY IN A LIST
+2.  FIND ALL OBJECTS WITHIN THAT LOCATION
+
+SELECT tag_id, RackObject.id, RackObject.name, RackObject.label, RackObject.asset_no, RackObject.objtype_id
+FROM RackObject
+LEFT JOIN TagStorage ON entity_realm = 'object'
+AND entity_id = RackObject.id
+WHERE tag_id =7
+
+
+ONLY SWICH OBJECTS 
+=========================
+SELECT tag_id, RackObject.id, RackObject.name, RackObject.label, RackObject.asset_no, RackObject.objtype_id
+FROM RackObject
+LEFT JOIN TagStorage ON entity_realm = 'object'
+AND entity_id = RackObject.id
+WHERE tag_id =7
+And objtype_id =8
+
+
+$sql = "SELECT tag_id, RackObject.id, RackObject.name, RackObject.label, RackObject.asset_no, RackObject.objtype_id FROM RackObject LEFT JOIN TagStorage on entity_realm = 'object' and entity_id = RackObject.id WHERE ";
+
+
+
+
+
+SELECT RackObject.id, RackObject.name, RackObject.label, RackObject.asset_no, RackObject.objtype_id,  RackObject.has_problems, RackObject.comment, as nports, (SELECT 1 FROM VLANSwitch WHERE object_id = id LIMIT 1) as runs8021Q FROM RackObject ORDER BY RackObject.name  

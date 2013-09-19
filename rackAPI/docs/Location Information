@@ -1,0 +1,55 @@
+Location Information 
+========================================
+- USA branch currently using TAG Tree. 
+- they have a tag called Location - and under location, they have created various other tags that represent specific locaitons. 
+
+ 
+ when i created new "CAN" tag with "Location" as the parent tag, this is the sql statement that was executed: 
+
+ 			INSERT INTO TagTree (tag, parent_id) VALUES ('CAN', '38')
+
+when you associate an object with a location tag, it does something like this:  (this test was done on the CAN database)
+
+           INSERT INTO TagStorage (entity_realm, entity_id, tag_id) VALUES ('object', '416', '2')
+
+           where 416 is my test switch, tag_id 2 is the "CAN" location tagId that i craeted. so if yu wanted to see all objects in canada, you could search for 
+
+           SELECT * from tagstorage where tag_id='2'
+
+so... Tag "Location" is tag id 38.  this is a self referencing table. 
+
+NOTE:  version 0.20 of racktables has location field built into it.  are we going to move to this new feature or stay status quo?  rackhack built to use tags for now, because that's what usa is doing. 
+
+All locations USA is using: 
+=============================
+
+SELECT *
+FROM `TagTree`
+WHERE parent_id =38
+LIMIT 0 , 30
+
+Results
+
+   ID PARENT_ID VALUE
+   ====================
+	1 	38 		WKL
+ 	6 	38 		Cervalis
+ 	8 	38 		60 Hudson
+ 	9 	38 		PAT
+ 	44 	38 		JCAH
+ 	63 	38 		BRK
+ 	86 	38 		Tuxedo
+ 	109 38 		CAN
+
+ 	** obviously within each location, they then have sublocations.  For our purposes, we will only list switches by their main locations, listed above.
+
+
+
+List each Tag and the total number of objects for each tag type: 
+=======================================================================
+SELECT id, parent_id, tag, entity_realm AS realm, count( entity_id ) AS refcnt
+FROM TagTree
+LEFT JOIN TagStorage ON id = tag_id
+GROUP BY id, entity_realm
+ORDER BY tag
+LIMIT 0 , 500=

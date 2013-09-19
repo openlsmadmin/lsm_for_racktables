@@ -1,0 +1,88 @@
+
+<div class="row-fluid">		
+	  <div>
+		<!-- add some hidden controls for use in javascrsipt -->
+		<input type="hidden" id="ip" value="<?php echo $ip ?>"/>
+		<input type="hidden" id="hardwaremodel" value="<?php echo $hardwaremodel ?>"/>
+		<input type="hidden" id="port" value="<?php echo $portname ?>"/>	
+	  </div>
+		  
+	  <div class="span6" id="clientajaxcontainer">
+	  
+	      <h2>Port POE Status: Port <?php echo $portname;?></h2>
+	      <p><p>
+	      <?php echo $poeStatus;?>			      
+	      <button class="btn" id="enable">Enable POE</button>&nbsp;
+	      <button class="btn" id="disable">Disable POE</button>		      	 
+	  </div>
+	  
+</div>	  
+<p>
+ <div id="enable-indicator">
+        <img src="<?php echo base_url();?>assets/img/wip.gif" /> enabling poe...
+ </div>	
+ <p>
+ <div id="disable-indicator">
+        <img src="<?php echo base_url();?>assets/img/wip.gif" /> disabling poe...
+ </div>	 
+<script>
+
+$(document).ready(function(){
+      $('#enable-indicator').hide();
+      $('#disable-indicator').hide();
+      
+      //Enable POE button
+      $('#enable').live('click', function()  {
+	  $('#enable-indicator').fadeIn();
+	   //alert('in POEOn');
+	   console.log('On');
+	  //disbled button until ajax request is done. 
+	  $(this).attr("disabled","disabled");
+	  $('#disable').attr("disabled","disabled");
+	  var htmlstring;
+	  $.ajax({
+	    url:"<?php echo site_url('switches/poeOn/'.$ip.'/'.$hardwaremodel.'/'.$portname);?>",
+	    type:'POST',
+	    dataType:'text',
+	    success: function(returnDataFromController) {
+		htmlstring = "<h2>Port POE Status: Port " + $('#port').val() + "</h2><p><p>" + returnDataFromController + "<button class='btn' name='enable' id='enable'>Enable POE</button>&nbsp;<button class='btn' name='disable' id='disable'>Disable POE</button>";	
+		//alert(htmlstring);
+		$('#clientajaxcontainer').html(htmlstring);	
+		console.log(htmlstring);
+		$('#enable-indicator').fadeOut();
+	  }
+	});
+	//reenable the buttons.
+	$(this).removeAttr("disabled");
+	$('#disable').removeAttr("disabled");
+      });
+      
+      
+      //Disable POE button
+      $('#disable').live('click', function()  {
+	//alert('in POEoff');
+	$('#disable-indicator').fadeIn();
+	console.log('Off');
+	//disbled button until ajax request is done. 
+	$(this).attr("disabled","disabled");
+	$('#enable').attr("disabled","disabled");
+	
+	$.ajax({
+	  url:"<?php echo site_url('switches/poeOff/'.$ip.'/'.$hardwaremodel.'/'.$portname);?>",
+	  type:'POST',
+	  dataType:'text',
+	  success: function(returnDataFromController) {
+		htmlstring = "<h2>Port POE Status: Port " + $('#port').val() + "</h2><p><p>" + returnDataFromController + "<button class='btn' name='enable' id='enable'>Enable POE</button>&nbsp;<button class='btn' name='disable' id='disable'>Disable POE</button>";	
+		
+		//alert(htmlstring);
+		$('#clientajaxcontainer').html(htmlstring);	
+		console.log(htmlstring);
+		$('#disable-indicator').fadeOut();
+	}
+      });
+      //reenable the buttons.
+      $(this).removeAttr("disabled");
+      $('#enable').removeAttr("disabled");
+    });    
+});
+</script>

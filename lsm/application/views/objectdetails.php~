@@ -1,0 +1,113 @@
+          <div class="row-fluid">  
+		<h2><?php echo $switchDetails['response']['name'].' '.$hardwaremodel; ?></h2>
+			<div class="span12">
+			
+			<?php if ($connectable) {?>
+			  <table class="table table-condensed">
+			  <tbody>
+				  <p>
+				  <?php foreach ($switchDetails['response']['ipv4'] as $ip =>$content): ?>
+
+				      <tr>	
+					  <td valign="bottom"><h2><?php echo $ip ?></h2></td>
+					 
+					  <td>&nbsp;<div id="macaddy" class="qtipbasic"><?php echo anchor("switches/macaddresses/".$ip.'/'.$hardwaremodel,'<img src="'.base_url().'assets/img/bigmac.jpg" height="30.5em" width="30.5em">'); ?></div></td>		
+					  <td>&nbsp;<div id="logs" class="qtipbasic"><?php echo anchor("switches/logs/".$ip.'/'.$hardwaremodel,'<img src="'.base_url().'assets/img/log_icon.jpg" height="30.5em" width="30.5em">'); ?></div></td>	
+					   <td>&nbsp;<div id="portstatus" class="qtipbasic"><?php echo anchor("switches/allportsstatus/".$ip.'/'.$hardwaremodel,'<img src="'.base_url().'assets/img/status.jpg" height="30.5em" width="30.5em">'); ?></div></td>	
+					    <td>&nbsp;</td>
+		  			   <td class="lights"><div id="indicatorlight" class="qtipbasic"><?php echo anchor("switches/indicatorlight/".$ip.'/'.$hardwaremodel.'/'.'1'.'/'.$objectid,'On'); ?>
+					   &nbsp;/&nbsp;<?php echo anchor("switches/indicatorlight/".$ip.'/'.$hardwaremodel.'/'.'0'.'/'.$objectid,'Off'); ?>	
+					  &nbsp;/&nbsp;<?php echo anchor("switches/indicatorlight/".$ip.'/'.$hardwaremodel.'/'.'2'.'/'.$objectid,'Blink'); ?></div></td>
+					  		  			 	  
+				  <?php endforeach ?>
+				  </p>
+			  </tbody>
+			  </table>
+			  
+			  <?php   }//close If statement ?>
+			 <P>
+				<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Port Name</th>
+						<th>Label</th>
+						<th>Interface</th>
+						<!--<th>L2 Address</th> -->
+						<th>Object ID</th>
+						<th>VLAN</th>
+						<th>POE</th>
+						
+					</tr>
+				</thead>
+				<tbody>
+					<p>
+					<?php foreach ($switchDetails['response']['ports'] as $port): ?>
+
+					    <tr>				
+						<td>												
+						    <?php 
+						      If (isset($ip)) {
+							    echo anchor("switches/portstatus/".$ip.'/'.$hardwaremodel.'/'.$port['name'],$port['name']);
+						      }	
+						      else {		
+						      
+						      echo ($port['name']);
+						      }
+
+						    ?>&nbsp;						
+						</td>
+						<td><?php echo $port['label']?>&nbsp;</td>
+						<td><?php echo $port['oif_name'] ?>&nbsp;</td>
+						<!--<td><?php echo $port['l2address'] ?>&nbsp;</td>-->
+						<td><?php echo $port['id'] ?></td>	
+						<td>&nbsp;
+						      <?php 						
+							    if (isset($ip)) {
+								  echo anchor("switches/showportvlan/".$ip.'/'.$hardwaremodel.'/'.$port['name'],'<img src="'.base_url().'assets/img/yellowrouter.png" height="30.5em" width="30.5em">'); 
+							    }						      
+						      ?>
+						 </td>	
+						 
+						<td>&nbsp;
+						      <?php 						
+							    if (isset($ip)) {
+								  echo anchor("switches/showPoeStatus/".$ip.'/'.$hardwaremodel.'/'.$port['name'],'<img src="'.base_url().'assets/img/poe.jpg" height="30.5em" width="30.5em">'); 
+							    }						      
+						      ?>
+						 </td>							 
+					  </tr>
+
+						 								
+					<?php endforeach ?>
+					</p>
+				</tbody>
+				</table>
+			</div>
+
+          </div><!--/row-->
+          
+         
+    <script>
+      $('#macaddy a[href]').qtip(
+	{
+	  content: 'show mac addresses',
+	  style: 'blue'
+	});
+	
+      $('#logs a[href]').qtip(
+	{
+	  content: 'show log',
+	  style: 'blue'
+	});	
+      $('#portstatus a[href]').qtip(
+	{
+	  content: 'show all port status',
+	  style: 'blue'
+	});	
+	
+       $('#indicatorlight a[href]').qtip(
+	{
+	  content: 'locator light', 	
+	  style: 'blue' // Give it some style
+	});
+    </script>

@@ -1,0 +1,344 @@
+
+<div class="container-fluid" id="locationsbar">
+
+			
+	<div class="row-fluid">
+			<div class="span12" id="l1locations">
+				<p id="yourgeolocation"></p>
+				<h2><?php echo $title;?></h2>
+				
+				<div class="span3">
+						<h4>Branch:</h4>
+						<select name='L1Locations' id='L1Locations'>
+							<option selected value''></option>
+							<?php
+								foreach ($branches as $key=>$value)
+								{
+									echo '<option value="'.$key.'">'.$value."</option>";
+								}
+
+							?>
+						</select>	
+				</div>
+				<div class="span3" id="l2locations"></div>
+				<div class="span3" id="l3locations"></div>
+				<h4>&nbsp;</h4>
+				<button class="btn " id="search">Search</button>
+			</div>
+	</div>
+	<div class="row-fluid">
+			
+				<div class="span12" id="l1locations">
+						<table id="switchrecords" name="switchrecords" class="table table-bordered table-striped">
+
+						</table>
+				</div>
+
+	</div>
+
+</div>
+
+
+<script>
+
+
+$(document).ready(function(){
+      $('#search').show();
+  });
+
+$('#search').live('click',function(){
+		   //reset table first. 
+		   $('#switchrecords').html('');
+		   // BRANCH
+		  $location1selection = $('#L1Locations').val();
+
+		  //BUILDLING
+		  if ($('#L2Locations').length) // equivalent to doing exists()
+		  {
+		  	$location2selection = $('#L2Locations').val(); //looks like 2.5		  
+		  	$l2val = $location2selection.split(".")			//split 2.5 into an array
+		  	$l2val=($l2val[$l2val.length-1] );	//get the last element of the array.  s/b 5 in this eg)		  	
+		  }
+		  else
+		  {
+		  	$l2val = 0;
+
+		  }
+		  
+		  //ROOM		  
+		  if ($('#L3Locations').length) // equivalent to doing exists()
+		  {
+		  	$location3selection = $('#L3Locations').val();
+ 
+		  	$l3val = $location3selection.split(".")			//split 2.5 into an array
+		  	$l3val=($l3val[$l3val.length-1] );	//get the last element of the array.  s/b 5 in this eg)			  	
+		  }
+		  else
+		  {
+		  	$l3val = 0;
+		  }
+		 
+		//alert(BASEPATH + 'index.php/switches/getswitchesbylocation/' + $location1selection + '/' + $l2val + '/' + $l3val);  		
+		$.ajax({
+			    url: BASEPATH + 'index.php/switches/getswitchesbylocation/' + $location1selection + '/' + $l2val + '/' + $l3val,
+			    type:'POST',
+			    dataType:'json',
+			    success: function(returnDataFromController) {
+			    	//alert('in success');
+			    		var htmlstring;
+			    		htmlstring="<select name='L2Locations' id='L2Locations'>";
+			    		htmlstring = htmlstring + "<option value=9999>All</option>";
+
+					    //console.log(returnDataFromController);
+						 var JSONdata=returnDataFromController;
+						 //console.log(JSONdata);
+						 if (JSONdata.length != 0) 
+					     {
+
+					     		//create a heading row and attach it to the existing switchrecords table.
+					     		var heading = $('<tr id="tblheading" naming="tblheading">').appendTo($('#switchrecords'));
+								heading.append($('<td>').append().text('Branch'));
+								//heading.append($('<td>').append().text('BranchID'));
+								heading.append($('<td>').append().text('Branch Switch Name'));
+								//heading.append($('<td>').append().text('BranchSwitchID'));
+								heading.append($('<td>').append().text('Building'));
+								//heading.append($('<td>').append().text('BuildingID'));
+								heading.append($('<td>').append().text('Building Switch Name'));
+								//heading.append($('<td>').append().text('BuildingSwitchID'));
+								heading.append($('<td>').append().text('Room'));
+								//heading.append($('<td>').append().text('RoomID'));
+								heading.append($('<td>').append().text('Room Switch Name'));
+								//heading.append($('<td>').append().text('RoomSwitchID'));
+ 	 	 	 	 	 	 	 	 	 	
+								//loop through each JSONdata item in the array and append another row to the switchrecords table.
+								$.each(JSONdata, function(i, objswitch) {								
+								     //console.log(JSONdata[i].id);
+								    //console.log(objswitch.id);
+								    var row = $('<tr>').appendTo($('#switchrecords'));
+	
+									if (objswitch.BranchName)
+									{
+										row.append($('<td>').append(objswitch.BranchName).text(objswitch.BranchName));
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}
+									/*
+									if (objswitch.BranchID)
+									{
+										row.append($('<td>').append(objswitch.BranchID).text(objswitch.BranchID));
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}	*/
+									//00000000		
+									if (objswitch.BranchSwitchName)
+									{
+										//row.append($('<td>').append(objswitch.BranchSwitchName).text(objswitch.BranchSwitchName));
+										row.append($('<td>').append($('<a href='+ BASEPATH + 'index.php/switches/details/' + objswitch.BranchSwitchID +'>').text(objswitch.BranchSwitchName)));
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}
+									/*
+									if (objswitch.BranchSwitchID)
+									{
+										row.append($('<td>').append(objswitch.BranchSwitchID).text(objswitch.BranchSwitchID));
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}		*/
+										//00000000						
+									if (objswitch.BuildingName)
+									{
+										row.append($('<td>').append(objswitch.BuildingName).text(objswitch.BuildingName));
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}				
+									/*					
+									if (objswitch.BuildingID)
+									{
+										row.append($('<td>').append(objswitch.BuildingID).text(objswitch.BuildingID));
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}
+										*/
+									if (objswitch.BuildingSwitchName)
+									{
+										//row.append($('<td>').append(objswitch.BuildingSwitchName).text(objswitch.BuildingSwitchName));
+										row.append($('<td>').append($('<a href='+ BASEPATH + 'index.php/switches/details/' + objswitch.BuildingSwitchID +'>').text(objswitch.BuildingSwitchName)));	
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}	
+									/*
+									if (objswitch.BuildingSwitchID)
+									{
+										row.append($('<td>').append(objswitch.BuildingSwitchID).text(objswitch.BuildingSwitchID));
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}	
+									*/
+									if (objswitch.RoomName)
+									{
+										row.append($('<td>').append(objswitch.RoomName).text(objswitch.RoomName));
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}	
+									/*
+									if (objswitch.RoomID)
+									{
+										row.append($('<td>').append(objswitch.RoomID).text(objswitch.RoomID));
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}*/
+									if (objswitch.RoomSwitchName)
+									{
+										//row.append($('<td>').append(objswitch.RoomSwitchName).text(objswitch.RoomSwitchName));
+										row.append($('<td>').append($('<a href='+ BASEPATH + 'index.php/switches/details/' + objswitch.RoomSwitchID +'>').text(objswitch.RoomSwitchName)));	
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}
+									/*
+									if (objswitch.RoomSwitchID)
+									{
+										row.append($('<td>').append(objswitch.RoomSwitchID).text(objswitch.RoomSwitchID));
+									}
+									else
+									{
+										row.append($('<td>').append().text(''));
+									}*/									
+
+							});
+
+						 }
+											   				
+			   		}//success
+
+
+			});//end ajax
+  			
+
+});
+
+
+$('#L1Locations').live('change',function(){
+
+		 $('#search').hide();
+		 $('#l2locations').html('');
+		 $('#l3locations').html('');		
+		 
+		  var htmlstring;
+		  $selectedvalue = $('#L1Locations').val();
+		
+		  if ($selectedvalue !='')  //if they want all locations don't do the look ups.
+		  {
+
+				  $.ajax({
+						    url:"<?php echo site_url('switches/getbuildings/');?>" + "/" + $selectedvalue,
+						    type:'GET',
+						    dataType:'json',
+						    success: function(returnDataFromController) {
+						    	   //console.log("getbuildings ajax call successfull");
+						    		var htmlstring;
+						    		htmlstring="<h4>Building:</h4><select name='L2Locations' id='L2Locations'>";
+						    		htmlstring = htmlstring + "<option value='all'>All</option>";
+
+								    //console.log(returnDataFromController);
+		    						 var JSONdata=[returnDataFromController];
+		    						 //console.log(JSONdata);
+		    						 if (JSONdata.length != 0) 
+								     {
+									        for(var i=0;i<JSONdata.length;i++){
+									        var obj = JSONdata[i];
+									     
+											          for(var key in obj){
+											                 var locationkey = key;
+											                 var locationname = obj[key];
+											    			 htmlstring = htmlstring + "<option value='" + locationkey + "'>" + locationname + "</option>";
+											            } //end inner for
+											         
+
+											    	$('#l2locations').html(htmlstring);
+									
+											}//end outer for
+										}
+
+										else {
+											//alert('i think undefined');
+											$('#l2locations').html('');
+										}
+														   				
+						   		}//success
+			
+
+						});//end ajax
+			}
+  			$('#search').show();
+  });
+
+$('#L2Locations').live('change',function(){
+	 	 $('#l3locations').html('');
+		 $('#search').hide();
+		  var htmlstring;
+		  $selectedvalueL1 = $('#L1Locations').val();
+		  $selectedvalueL2 = $('#L2Locations').val();
+		
+		  $.ajax({
+				    url:"<?php echo site_url('switches/getrooms');?>" + "/" + $selectedvalueL2,
+				    type:'GET',
+				    dataType:'json',
+				    success: function(returnDataFromController) {
+				    	   //console.log("getrooms ajax call successfull");
+				    		var htmlstring;
+				    		htmlstring="<h4>Room:</h4><select name='L3Locations' id='L3Locations'>";
+				    		htmlstring = htmlstring + "<option value='all'>All</option>";
+
+						    //console.log(returnDataFromController);
+    						 var JSONdata=[returnDataFromController];
+    						 //console.log(JSONdata);
+    						 if (JSONdata.length != 0) 
+						     {
+							        for(var i=0;i<JSONdata.length;i++){
+							        var obj = JSONdata[i];
+							     
+									          for(var key in obj){
+									                 var locationkey = key;
+									                 var locationname = obj[key];
+									    			 htmlstring = htmlstring + "<option value='" + locationkey + "'>" + locationname + "</option>";
+									            } //end inner for
+									         
+									         //console.log("html to create combo:" + htmlstring)
+									    	$('#l3locations').html(htmlstring);
+							
+									}//end outer for
+								}
+
+								else {
+									//alert('i think undefined');
+									$('#l3locations').html('');
+								}
+												   				
+				   		}//success
+
+		});
+  $('#search').show();
+  });
+ </script>

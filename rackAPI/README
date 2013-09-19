@@ -1,0 +1,50 @@
+LSM 0.1 Change Desc / Status as of Nov 28, 2012
+-----------------------------------------------
+ •application has yet to be modified to target ipod as end device. Current version has quite a bit of test / debug code - you'll notice interesting images appear as you resize browser. We are going to address but all GUI issues will be addressed after main app functionality is delivered.
+•cisco SF300's not supported in this version. goal is to have full support by next release. 
+
+LSM 0.3 Change Desc / Status as of Jan 23, 2013
+-----------------------------------------------
+ •Logging PHP ERRORS to lsm/application/logs 
+•Switch connections limited to 4 
+•New folder called lsm/application/counters 
+•Custom error messages for the following scenarios: 
+• * Inability to connect to switch 
+• * No data returned from switch 
+• * Unexpected errors returns a generic error message for user. Details written to log.
+ •CISCO IE 3000 now supported ** changing port vlan needs to be revisited. 
+•Racktables “remote object” field now used to lock down ports, instead of “visible label”
+ •Clean Up 
+• * Unused files removed 
+• * Common code in different modules consolidated into functions. 
+• * Standardized API between switch models 
+•Bug Fixes: 
+• * Explicitly sorting the Country / Building list alphabetically 
+• * Switches with missing IP addresses now “handled”. The switch will be treated as a “non-connectable” device. No icons will be displayed.
+ 
+LSM 0.4 Change Desc / Status as of Jan 30, 2013
+------------------------------------------------
+•New Request - Logging PHP ERRORS to /var/logs 
+•New Request – Change counter logs to /var/logs 
+•IE3000 interface 
+• * New Request - automatically change port from ACCESS to TRUNK when users try to add TAGGED vlans.
+ • * New Request – filter VLAN 1, fddi-default, fddinet-default, token-ring-default, trnet-default VLANS
+ • * New Request – when showing port vlans, if tagged vlans are set to ALL, return list of specific vlans included in “show vlan” command
+ • * New Request – display “reservation comments” in addition to “visible label” and “remote objects”
+ •SF300 Interface 
+• * New Bug Find with Firmware – cannot remove tagged vlans from trunk without system resetting Untagged vlan to 1. Reported problem to CISCO. You will NOT be able to delete tagged vlans until this is resolved. We will not be building a patch around this CISCO bug.
+ 
+Anomalies: 
+
+LSM 0.5 Change Desc / Status as of Feb.12, 2013
+------------------------------------------------
+Made a few changes to support https
+
+LSM 0.6 Change Desc / Status as of Feb.25, 2013
+------------------------------------------------
+HP Procurve interface changed to support switches with banner motd turned on.  Having banner changes the terminal mode from vt100 to ansi.
+Using File_ANSI to filter out unwanted escape characters
+
+LSM 0.7 Change Desc / Status as of April 3, 2013
+------------------------------------------------
+Added logic to support ipod5 as main mobile device. 

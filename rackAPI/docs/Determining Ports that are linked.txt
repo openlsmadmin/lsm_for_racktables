@@ -1,0 +1,45 @@
+TO GET GENERAL PORT LIST (NO LINKING INFORMATION)
+========================================================
+	SELECT id, name, label, l2address, iif_id, (SELECT iif_name FROM PortInnerInterface WHERE id = iif_id) AS iif_name, (SELECT name FROM RackObject WHERE Port.object_id = RackObject.id) AS object_name, type AS oif_id, (SELECT dict_value FROM Dictionary WHERE dict_key = type) AS oif_name, reservation_comment FROM Port WHERE object_id = '5'
+
+	object_id is rackobject id
+
+
+TO LOOK UP IF LINKS EXIST FOR EACH PORT NUMBER: 
+====================================================
+	Select porta, portb, cable from Link where porta = '173' or portb = '173'
+
+
+TO FIND OUT WHICH Rackobject a port is linked to 
+================================================
+SELECT name, object_id FROM Port WHERE id = '2663'
+
+ 	name 	object_id
+	Gi1/17 	2
+
+
+
+SQL To try to include details for any port that is linked.
+
+SELECT id, name, label, l2address, (SELECT name FROM RackObject WHERE Port.object_id = RackObject.id) AS object_name, (SELECT dict_value FROM Dictionary WHERE dict_key = type) AS oif_name, reservation_comment, lnk.porta, lnk.portb
+FROM Port 
+LEFT JOIN Link lnk ON lnk.porta = id or lnk.portb =id
+WHERE object_id = 5
+
+
+
+** modified the above sql so that it doesn't just return porta or portb.  Returning the rack object names so that you can then determine if it's a switch or not. 
+If it's linked to a switch, then you want to disable that port, or exclude it from the GUI so the users cannot accidentally kill a trunk.
+
+
+SELECT p.id, p.name, p.label, p.l2address, 
+(SELECT name FROM RackObject 
+WHERE p.object_id = RackObject.id) AS object_name, 
+p.reservation_comment, lnk.porta, lnk.portb, rA.name, rB.name
+FROM Port p
+LEFT JOIN Link lnk ON lnk.porta = id OR lnk.portb =id
+LEFT JOIN Port pA ON pA.id=lnk.porta
+LEFT JOIN Port pB ON pB.id=lnk.portb
+LEFT JOIN RackObject rA ON rA.id = pA.object_id
+LEFT JOIN RackObject rB ON rB.id = pB.object_id
+WHERE p.object_id = 5 ORDER BY p.id ASC

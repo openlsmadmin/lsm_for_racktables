@@ -1,0 +1,245 @@
+WITH ALFONSO!!!!!!!!!!!!!!!!!!!!
+
+SELECT *
+FROM RackObject ro
+LEFT JOIN TagStorage ts ON ts.entity_id = ro.id
+LEFT JOIN TagTree tt ON tt.id=ts.tag_id AND tt.parent_id=1
+WHERE ro.objtype_id=8
+
+
+SELECT * 
+FROM TagTree tt
+INNER JOIN TagStorage ts ON ts.tag_id=tt.id
+INNER JOIN RackObject ro ON ro.id=ts.entity_id
+WHERE tt.parent_id=(SELECT id FROM TagTree WHERE upper( tag ) = 'LOCATION' LIMIT 1) 
+AND ro.objtype_id=8
+
+
+
+
+
+SELECT L1ID, L1Location, L2ID, L2Location, tL3.id L3ID, tL3.tag L3Location FROM
+(SELECT L1.id L1ID, L1.tag L1Location, tL2.id L2ID, tL2.tag L2Location FROM
+(SELECT * FROM TagTree tL1
+WHERE tL1.parent_id=(SELECT id FROM TagTree WHERE upper( tag ) = 'LOCATION' LIMIT 1)) L1
+LEFT JOIN TagTree tL2 ON tL2.parent_id = L1.id) L2
+LEFT JOIN TagTree tL3 ON tL3.parent_id = L2.L2ID
+
+RETURNS Something like: 
+
+
+L1Location 	L2Location 				L3Location
+WKL 		DC-TER 					DC-TER-Bay01
+WKL 		DC-TER 					DC-TER-Bay02
+WKL 		DC-TER 					DC-TER-Bay03
+WKL 		DC-TER 					DC-TER-Bay00
+WKL 		DC-TER 					DC-TER-Bay05
+WKL 		DC-TER 					DC-TER-Bay04
+WKL 		DC-TER 					DC-TER-Bay06
+WKL 		DC-TER 					DC-TER-Cable Vault
+WKL 		DC-TER 					DC-TER-Bay09
+WKL 		DC-TER 					DC-TER-CrossConnectBay
+WKL 		Communications Building W-COM-GC-RR100
+WKL 		Communications Building W-COM-GC-RR200
+WKL 		SVC-1TR 				NULL
+WKL 		SVC-1DM 				NULL
+WKL 		WKL Buildings 			Modulars
+Cervalis 	U76 					NULL
+60 Hudson 	NULL					NULL
+PAT 		P-WHS-TER 				P-WHS-TER-Bay-09
+PAT 		P-WHS-TER 				P-WHS-TER-Bay-02
+PAT 		P-WHS-TER 				P-WHS-TER-Bay-06
+PAT 		P-WHS-TER 				P-WHS-TER-Bay-01
+PAT 		P-WHS-TER 				P-WHS-TER-Bay-03
+PAT 		P-WHS-TER 				P-WHS-TER-Bay-04
+PAT 		P-WHS-TER 				P-WHS-TER-Bay-05
+PAT 		P-WHS-TER 				P-WHS-TER-Bay-00
+PAT 		P-GSV-TR 	NULL
+PAT 	P-SCH-3RR 	P-SCH-3RR-RR100
+PAT 	P-SCH-3RR 	P-SCH-3RR-RR200
+PAT 	P-SCH-3RR 	P-SCH-3RR-RR300
+JCAH 	NULL	NULL
+
+
+//Lcation reference talbe for specific branch
+SELECT L1ID, L1Location, L2ID, L2Location, tL3.id L3ID, tL3.tag L3Location FROM
+(SELECT L1.id L1ID, L1.tag L1Location, tL2.id L2ID, tL2.tag L2Location FROM
+(SELECT * FROM TagTree tL1
+WHERE tL1.parent_id=(SELECT id FROM TagTree WHERE upper( tag ) = 'LOCATION' LIMIT 1)) L1
+LEFT JOIN TagTree tL2 ON tL2.parent_id = L1.id) L2
+LEFT JOIN TagTree tL3 ON tL3.parent_id = L2.L2ID
+WHERE L1ID=2
+
+
+SELECT TT.parent_id, TS.tag_id, TT.tag, RackObject.id, RackObject.name, RackObject.label, RackObject.asset_no, RackObject.objtype_id
+FROM RackObject
+LEFT JOIN TagStorage TS ON TS.entity_realm = 'object'
+AND TS.entity_id = RackObject.id
+LEFT JOIN TagTree TT ON TT.id = TS.tag_id
+WHERE TT.parent_id IN
+
+(SELECT id 
+FROM TagTree 
+WHERE id=2
+
+UNION 
+
+SELECT id
+FROM TagTree
+Where parent_id=2
+
+UNION
+SELECT TagTree.id FROM TagTree 
+INNER JOIN
+(
+  SELECT id, tag, parent_id
+  FROM TagTree
+  WHERE id=2
+  UNION
+  SELECT id, tag, parent_id
+  FROM TagTree
+  WHERE parent_id=2) Buildings
+ON TagTree.parent_id = Buildings.id ) 
+
+   AND RackObject.objtype_id
+                        IN ( 8, 1503 )
+
+  ==========================================================================================================
+September 21, 2012
+
+  SELECT
+TSBranch.tag_id BranchID, Locations.BranchName, ROBranch.name BranchSwitchName, ROBranch.id BranchRackObjectID,
+TSBuilding.tag_id BuildingID, Locations.BuildingName, ROBuilding.name BuildingSwitchName , ROBuilding.id BuildingRackObjectID,
+TSRoom.tag_id RoomID, Locations.Room RoomName, RORoom.name RoomSwitchName , RORoom.id RoomRackObjectID
+
+FROM
+
+(SELECT L1ID, L1Location BranchName, L2ID, L2Location BuildingName, tL3.id L3ID, tL3.tag Room FROM
+(SELECT L1.id L1ID, L1.tag L1Location, tL2.id L2ID, tL2.tag L2Location FROM
+(SELECT * FROM TagTree tL1
+WHERE tL1.parent_id=(SELECT id FROM TagTree WHERE upper( tag ) = 'LOCATION' LIMIT 1)) L1
+LEFT JOIN TagTree tL2 ON tL2.parent_id = L1.id) L2
+LEFT JOIN TagTree tL3 ON tL3.parent_id = L2.L2ID ) Locations
+LEFT JOIN TagStorage TSBranch ON TSBranch.tag_id = L1ID AND TSBranch.entity_realm = 'object'
+LEFT JOIN RackObject ROBranch ON ROBranch.id = TSBranch.entity_id
+
+LEFT JOIN TagStorage TSBuilding ON TSBuilding.tag_id = L2ID AND TSBranch.entity_realm = 'object'
+
+
+
+
+
+UNION Example
+======================
+
+
+BRNACH
+
+SELECT 
+TT.tag BranchName, TT.id BranchID, RO.name as BranchSwitchName, RO.id as BranchSwitchID, 
+NULL as BuildingName, NULL as BuildingID, NULL as BuildingSwitchName, NULL as BuildingSwitchID,
+NULL as RoomName, NULL as RoomID, NULL as RoomSwitchName, NULL as RoomSwitchID
+FROM RackObject RO
+INNER JOIN TagStorage TS ON TS.entity_realm = 'object' AND TS.entity_id = RO.id
+INNER JOIN TagTree TT ON TT.id = TS.tag_id
+WHERE RO.objtype_id IN ( 8, 1503 )
+AND TT.id=2
+
+
+Building
+
+SELECT 
+(SELECT tag FROM TagTree WHERE id=2) as BranchName, TT.parent_id as BranchID, NULL as BranchSwitchName, NULL as BranchSwitchID,
+TT.tag BuildingName, TT.id BuildingID, RO.name as BuildingSwitchName, RO.id as BuildingSwitchID, 
+NULL as RoomName, NULL as RoomID, NULL as RoomSwitchName, NULL as RoomSwitchID
+FROM RackObject RO
+INNER JOIN TagStorage TS ON TS.entity_realm = 'object' AND TS.entity_id = RO.id
+INNER JOIN TagTree TT ON TT.id = TS.tag_id
+WHERE RO.objtype_id IN ( 8, 1503 )
+AND TT.parent_id=2
+
+
+ROOM
+
+
+SELECT 
+(SELECT tag FROM TagTree WHERE id=2) as BranchName, 2 as BranchID, NULL as BranchSwitchName, NULL as BranchSwitchID,
+(SELECT tag FROM TagTree WHERE id=5) as BuildingName, 5 as Building, NULL as BuildingSwitchName, NULL as BuildingSwitchID,
+TT.tag RoomName, TT.id RoomID, RO.name as RoomSwitchName, RO.id as RoomSwitchID
+
+FROM RackObject RO
+INNER JOIN TagStorage TS ON TS.entity_realm = 'object' AND TS.entity_id = RO.id
+INNER JOIN TagTree TT ON TT.id = TS.tag_id
+WHERE RO.objtype_id IN ( 8, 1503 )
+AND TT.parent_id 
+IN
+(SELECT ID
+FROM TagTree 
+WHERE parent_id=2)
+
+==================
+
+get all locations in a building
+
+SELECT * FROM
+(SELECT 
+TT.tag BranchName, TT.id BranchID, RO.name as BranchSwitchName, RO.id as BranchSwitchID, 
+NULL as BuildingName, NULL as BuildingID, NULL as BuildingSwitchName, NULL as BuildingSwitchID,
+NULL as RoomName, NULL as RoomID, NULL as RoomSwitchName, NULL as RoomSwitchID
+FROM RackObject RO
+INNER JOIN TagStorage TS ON TS.entity_realm = 'object' AND TS.entity_id = RO.id
+INNER JOIN TagTree TT ON TT.id = TS.tag_id
+WHERE RO.objtype_id IN ( 8, 1503 )
+AND TT.id=2
+
+UNION
+
+SELECT 
+(SELECT tag FROM TagTree WHERE id=2) as BranchName, TT.parent_id as BranchID, NULL as BranchSwitchName, NULL as BranchSwitchID,
+TT.tag BuildingName, TT.id BuildingID, RO.name as BuildingSwitchName, RO.id as BuildingSwitchID, 
+NULL as RoomName, NULL as RoomID, NULL as RoomSwitchName, NULL as RoomSwitchID
+FROM RackObject RO
+INNER JOIN TagStorage TS ON TS.entity_realm = 'object' AND TS.entity_id = RO.id
+INNER JOIN TagTree TT ON TT.id = TS.tag_id
+WHERE RO.objtype_id IN ( 8, 1503 )
+AND TT.parent_id=2
+
+
+UNION
+
+SELECT 
+(SELECT tag FROM TagTree WHERE id=2) as BranchName, 2 as BranchID, NULL as BranchSwitchName, NULL as BranchSwitchID,
+(SELECT tag FROM TagTree WHERE id=5) as BuildingName, 5 as Building, NULL as BuildingSwitchName, NULL as BuildingSwitchID,
+TT.tag RoomName, TT.id RoomID, RO.name as RoomSwitchName, RO.id as RoomSwitchID
+
+FROM RackObject RO
+INNER JOIN TagStorage TS ON TS.entity_realm = 'object' AND TS.entity_id = RO.id
+INNER JOIN TagTree TT ON TT.id = TS.tag_id
+WHERE RO.objtype_id IN ( 8, 1503 )
+AND TT.parent_id 
+IN
+(SELECT ID
+FROM TagTree 
+WHERE parent_id=2)) Full
+WHERE Full.BuildingID = 5
+
+=======================================
+
+Monday Sept 24th
+Bug fixes: 
+
+Search By Branch / Building: 
+SELECT 
+(SELECT tag FROM TagTree WHERE id=2) as BranchName, 2 as BranchID, NULL as BranchSwitchName, NULL as BranchSwitchID,
+(SELECT tag FROM TagTree WHERE id=5) as BuildingName, 5 as BuildingID, NULL as BuildingSwitchName, NULL as BuildingSwitchID,
+TT.tag RoomName, TT.id RoomID, RO.name as RoomSwitchName, RO.id as RoomSwitchID
+FROM RackObject RO
+
+INNER JOIN TagStorage TS ON TS.entity_realm = 'object' AND TS.entity_id = RO.id
+INNER JOIN TagTree TT ON TT.id = TS.tag_id
+WHERE RO.objtype_id IN ( 8, 1503 )
+AND TT.parent_id 
+IN
+(SELECT ID
+FROM TagTree 
+WHERE parent_id=2)

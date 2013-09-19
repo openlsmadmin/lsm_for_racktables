@@ -1,0 +1,37 @@
+
+  <div class="row-fluid">		
+			<div class="span12">
+			
+			<h2>Assign New Duplex Value - <?php echo $dnsName.' ( '.$ip.' )'; ?></h2>
+			
+			<h3>Port: <?php echo $portname;?></h3> 
+			<p><p>
+			<?php
+			
+			$attributes = array('class' => 'well', 'id' => 'duplex');
+
+			echo form_open('switches/assignduplex/'.$ip.'/'.$hardwarename.'/'.$portname.'/'.$dnsName.'/'.$FQDN.'/'.$objectid, $attributes);
+			
+			$options = array(
+					  '10-half'  => '10-half',
+					  '100-half'    => '100-half',
+					  '10-full'   => '10-full',
+					  '100-full' => '100-full',					 
+					   'auto' => 'auto',
+					   'auto-10' => 'auto-10',
+					   'auto-100' => 'auto-100',
+					   'auto-1000' => 'auto-1000',
+					  'auto-10-100' => 'auto-10-100', 
+					);
+
+			//$duplexsetting = array('small', 'large');
+			
+			echo form_dropdown('duplex', $options, '10-half');
+			echo form_submit('submit', 'save changes');
+			echo form_close()
+			?>
+
+			</div>
+          </div>
+          
+   

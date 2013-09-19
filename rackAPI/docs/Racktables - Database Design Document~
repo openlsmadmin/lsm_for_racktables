@@ -1,0 +1,30 @@
+Attributes for an object:
+=====================================
+
+Table:  AttributeValue
+Sample SQL: 
+	this sql will select all attributes for your test swtich - object id 416. 
+	
+	SELECT *
+	FROM AttributeValue
+	WHERE object_id = '416'
+	LIMIT 0 , 30
+
+	
+attr_id values: 
+	1 =  OEM S/N 1:
+        2 = hardware type / name.  This is what we were using previously to decode hardware names.  the actual names are stored in the Dictionary Table.
+        3 =  FQDN:
+        4 = software type
+        5 = software version
+        14 = contact person
+        16 = flash memory, MB:	
+        17 = DRAM, MB:
+        18 = CPU, MHz:
+        20 = OEM S/N 2
+        21 = support contract expiration:	DATE field
+       22 = HW warranty expiration:saved as a Unix date??  sample data looks like:  1355270400
+       24  =  SW warranty expiration:
+       28 = Slot number:
+       
+      

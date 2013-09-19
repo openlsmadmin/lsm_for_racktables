@@ -1,0 +1,65 @@
+
+  <div class="row-fluid">		
+			<div class="span12">
+			
+			<h2>Assign New Duplex Setting</h2>
+			<h3><?php echo $ip. ' Port:'. $portname;?></h3>
+			<p><p>
+			<?php
+			
+			$attributes = array('class' => 'well', 'id' => 'duplex');
+
+			echo form_open('switches/assignduplex/'.$ip.'/'.$hardwarename.'/'.$portname, $attributes);
+			
+			$options = array(
+					  '10-half'  => '10-half',
+					  '100-half'    => '100-half',
+					  '10-full'   => '10-full',
+					  '100-full' => '100-full',
+					  '1000-full' => '1000-full',
+					   'auto' => 'auto',
+					   'auto-10' => 'auto-10',
+					   'auto-100' => 'auto-100',
+					   'auto-1000' => 'auto-1000',
+					  'auto-10-100' => 'auto-10-100', 
+					);
+
+			//$duplexsetting = array('small', 'large');
+			
+			echo form_dropdown('duplex', $options, '10-half');
+			echo form_submit('submit', 'save changes');
+			echo form_close()
+			?>
+
+			</div>
+		<!--
+			<div class="span12"><h2>Available VLANS</h2>
+				<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>VlanId</th>
+						<th>Name</th>
+						<th>Status</th>
+						<th>Voice</th>
+						<th>Jumbo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<p>
+					<?php foreach ($knownvlans as $availvlan): ?>
+
+					    <tr>						
+						<td><?php echo $availvlan['Vlan ID'] ?></td>							<td><?php echo $availvlan['Name'] ?></td>
+						<td><?php echo $availvlan['Status'] ?></td>
+						<td><?php echo $availvlan['Voice'] ?></td>
+						<td><?php echo $availvlan['Jumbo'] ?></td>
+					     </tr>
+					<?php endforeach ?>
+					</p>
+				</tbody>
+				</table>
+			</div>			
+			-->
+          </div><!--/row-->
+          
+   

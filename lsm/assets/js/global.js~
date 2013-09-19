@@ -1,0 +1,1 @@
+var BASEPATH="<?php echo base_url();?>";

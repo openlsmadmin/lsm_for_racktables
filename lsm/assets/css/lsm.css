@@ -1,0 +1,1215 @@
+ /*
+    openLSM - Light Weight Switch Management Tool
+    Copyright (C) 2013 Julie Lee
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Contact Information: openlsmdev@gmail.com
+*/
+/* ##################################### Mobile Portrait ##################################### */
+
+/* *****************  overwrite bootstrap ***************** */
+
+@media  (max-width: 480px){
+	.hero-unit h1 {
+	  margin-bottom: 0;
+	  font-size: 1em;
+	  line-height: 0.5em;
+	  letter-spacing: -5px;
+	  color: inherit;
+	}
+	.hero-unit p {
+	  font-size: 0.2em;
+	  font-weight: 10em;
+	  line-height: 0.2em;
+	  color: inherit;
+	}	
+	.btn-large {
+	  padding: 5px 10px;
+	  font-size: 8px;
+	  line-height: 0.3em;
+	  -webkit-border-radius: 5px;
+		 -moz-border-radius: 5px;
+			  border-radius: 5px;
+	}		
+
+  	.hero-unit {
+    background: url("../img/LSMorange250.png");
+    height: 3.5em;
+    width: 13.3em;    
+    padding: 0.5em;
+    margin-bottom: 2em;
+    background-color: #eeeeee;
+    -webkit-border-radius: 0px;
+     -moz-border-radius: 0px;
+        border-radius: 0px;
+  	} 
+	
+
+	.text-general {
+  	color: #868686;
+  	font-size: 0.64em;
+	}	
+
+	/* show info button group not appearing properly */
+	.btn-group > .btn + .btn {
+		border-top-left-radius: 4px; 
+		border-bottom-left-radius: 4px
+	}
+	/* change the default button on mobile to be orange - copied the btn-warning settings from main bootsrap file*/
+	.btn {
+	  color: #ffffff;
+	  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	  background-color: #faa732;
+	  *background-color: #f89406;
+	  background-image: -moz-linear-gradient(top, #fbb450, #f89406);
+	  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fbb450), to(#f89406));
+	  background-image: -webkit-linear-gradient(top, #fbb450, #f89406);
+	  background-image: -o-linear-gradient(top, #fbb450, #f89406);
+	  background-image: linear-gradient(to bottom, #fbb450, #f89406);
+	  background-repeat: repeat-x;
+	  border-color: #f89406 #f89406 #ad6704;
+	  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffbb450', endColorstr='#fff89406', GradientType=0);
+	  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	}
+
+	.btn-group.open .btn.dropdown-toggle,
+	.btn:hover,
+	.btn:focus,
+	.btn:active,
+	.btn.active,
+	.btn.disabled,
+	.btn[disabled] {
+	  color: #ffffff;
+	  background-color: #f89406;
+	  *background-color: #df8505;
+	}
+
+	/* Overwrite bootstrap-responsive navigation bar
+	-------------------------------------------------- */
+
+	/*main heading / text in nav bar*/
+	.navbar .brand {
+	  color:#f89a15;
+	  /*color: #ff6d00;*/
+	  text-shadow: none;
+	}
+	/*menu items inside the navigation bar */
+	.nav-collapse .nav > li > a, .nav-collapse .dropdown-menu a {
+	    color:#f89a15;
+	  /*color: #ff6d00;*/
+	  	text-shadow: none;
+	}
+
+	/*button that appears in collapsed menu*/
+	.navbar .btn-navbar {
+		background: #ffaf4b; /* Old browsers */
+		/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+		background: -moz-linear-gradient(left, #ffaf4b 0%, #ff920a 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ffaf4b), color-stop(100%,#ff920a)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* IE10+ */
+		background: linear-gradient(to right, #ffaf4b 0%,#ff920a 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=1 ); /* IE6-8 */
+	}
+	/* TODO:: seems to be a bug with hover .. only on ipod */
+	.navbar .btn-navbar:hover,
+	.navbar .btn-navbar:active,
+	.navbar .btn-navbar.active,
+	.navbar .btn-navbar.disabled,
+	.navbar .btn-navbar[disabled] {
+	  background-color: #f89a15;
+	}
+
+	.navbar-inner {
+	    background: rgb(74,74,74); /* Old browsers */
+	    background: -moz-linear-gradient(top, rgb(74,74,74) 1%, rgb(54,54,54) 100%); /* FF3.6+ */
+	    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgb(74,74,74)), color-stop(100%,rgb(54,54,54))); /* Chrome,Safari4+ */
+	    background: -webkit-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* Chrome10+,Safari5.1+ */
+	    background: -o-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* Opera 11.10+ */
+	    background: -ms-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* IE10+ */
+	    background: linear-gradient(to bottom, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* W3C */
+	    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4a4a4a', endColorstr='#363636',GradientType=0 ); /* IE6-9 */
+	}
+	/* Overwrite bootstrap-responsive span1 - for progress bar on ipod to appear left justified.
+	-------------------------------------------------------------------------------------------- */
+	[class*="span"], .row-fluid [class*="span"] {
+	    float: left;
+	}
+
+
+	/* *****************  LSM Custom ***************** */
+
+	.lsm-hidden-desktop {
+	display: inherit !important;
+	}
+	.lsm-visible-desktop {
+	display: none !important;
+	}
+	.lsm-visible-phone {
+	display: inherit !important;
+	}
+	.lsm-hidden-phone {
+	display: none !important;
+	}
+
+	/* ipad portrait mode*/
+	.lsm-visible-tablet { 
+	display: none !important;
+	}
+
+	img.objectdetails
+	{
+		height:2.5em;
+		width:2.5em;
+	}
+	#progress-indicator{
+	position: relative;
+	margin: 0 auto;
+	top: 60%;
+	width: 50%;
+	height: 50%;
+	}
+
+	#save-progress-indicator{
+	position: relative;
+	margin: 0 auto;
+	top: 30%;
+	width: 50%;
+	height: 50%;
+	}
+
+	highlight{
+	 background-color: red;
+	}
+
+	/* ***************** general ***************** */
+	a {
+	  color:#f89a15;
+	  /*color: #ff6d00;*/
+	}
+
+	h2 {
+	margin-bottom: 0;
+	font-size: 1.5em;
+	line-height: 1em;
+	letter-spacing: 0.5px;
+	color: inherit;
+	}
+
+	h3 {
+	margin-bottom: 0;
+	font-size: 1em;
+	line-height: 1em;
+	letter-spacing: 0.5px;
+	color: inherit;
+	}
+	/* bacground color body */
+	body {
+	    background-color: #333333;
+	    color: rgb(204, 204, 204);
+	}
+
+	/* *****************  homepage menu ***************** */
+
+	.bs-docs-sidenav {
+	  width: 248px;
+	  margin: 30px 0 0;
+	  padding: 0;
+	   background-color: rgb(34, 34, 34);
+	  -webkit-border-radius: 6px;
+	     -moz-border-radius: 6px;
+	          border-radius: 6px;
+	  -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	     -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	          box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	}
+	.bs-docs-sidenav > li > a {
+	  display: block;
+	  width: 190px 9;
+	  margin: 0 0 -1px;
+	  padding: 8px 14px;
+	  border: 1px solid #363636;
+	  text-shadow:none;
+	}
+	.bs-docs-sidenav > li:first-child > a {
+	  -webkit-border-radius: 6px 6px 0 0;
+	     -moz-border-radius: 6px 6px 0 0;
+	          border-radius: 6px 6px 0 0;
+	}
+	.bs-docs-sidenav > li:last-child > a {
+	  -webkit-border-radius: 0 0 6px 6px;
+	     -moz-border-radius: 0 0 6px 6px;
+	          border-radius: 0 0 6px 6px;
+	}
+	.bs-docs-sidenav > .active > a {
+	  position: relative;
+	  z-index: 2;
+	  padding: 9px 15px;
+	  border: 0;
+	  -webkit-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	     -moz-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	          box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	}
+	/* Chevrons */
+	.bs-docs-sidenav .icon-chevron-right {
+	  float: right;
+	  margin-top: 2px;
+	  margin-right: -6px;
+	  opacity: .25;
+	}
+	.bs-docs-sidenav > li > a:hover {
+	  background-color: #464646;
+	  color: #fff;
+	}
+
+	.bs-docs-sidenav a:hover .icon-chevron-right {
+	  background-image: url(../img/glyphicons-halflings-white.png);
+	  opacity: 1;
+	}
+	.bs-docs-sidenav .active .icon-chevron-right,
+	.bs-docs-sidenav .active a:hover .icon-chevron-right {
+	  background-image: url(../img/lsmchevron.png);
+	  opacity: 1;
+	}
+
+	.bs-docs-sidenav.affix {
+	  top: 40px;
+	}
+
+	.bs-docs-sidenav.affix-bottom {
+	  position: absolute;
+	  top: auto;
+	  bottom: 270px;
+	}
+
+}/* end mobile portrait*/
+
+/* ##################################### Mobile Landscape ##################################### */
+
+@media (min-width:481px) and (max-width: 767px) {
+	.hero-unit h1 {
+	  margin-bottom: 0;
+	  font-size: 0.2em;
+	  line-height: 1em;
+	  letter-spacing: -5px;
+	  color: inherit;
+	}
+	.hero-unit p {
+	  font-size: 0.2em;
+	  font-weight: 50;
+	  line-height: 1em;
+	  color: inherit;
+	}	
+	.hero-unit {
+	  background: url("../img/LSMorange400.png");
+	  margin-bottom: 1em;
+	  height: .8em;
+	  width: 16em;
+	  background-color: #eeeeee;
+	  -webkit-border-radius: 0px;
+		 -moz-border-radius: 0px;
+			  border-radius: 0px;
+	}
+	.text-general {
+	  color: #868686;
+	}
+
+	img {
+	    /*max-width: 50%;*/
+	}
+
+	/* show info button group not appearing properly */
+	.btn-group > .btn + .btn {
+		border-top-left-radius: 4px; 
+		border-bottom-left-radius: 4px
+	}
+
+	/* show info button group not appearing properly */
+	.btn-group > .btn + .btn {
+		border-top-left-radius: 4px; 
+		border-bottom-left-radius: 4px
+	}
+	/* change the default button on mobile to be orange - copied the btn-warning settings from main bootsrap file*/
+	.btn {
+	  color: #ffffff;
+	  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	  background-color: #faa732;
+	  *background-color: #f89406;
+	  background-image: -moz-linear-gradient(top, #fbb450, #f89406);
+	  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fbb450), to(#f89406));
+	  background-image: -webkit-linear-gradient(top, #fbb450, #f89406);
+	  background-image: -o-linear-gradient(top, #fbb450, #f89406);
+	  background-image: linear-gradient(to bottom, #fbb450, #f89406);
+	  background-repeat: repeat-x;
+	  border-color: #f89406 #f89406 #ad6704;
+	  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffbb450', endColorstr='#fff89406', GradientType=0);
+	  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	}
+
+	.btn-group.open .btn.dropdown-toggle,
+	.btn:hover,
+	.btn:focus,
+	.btn:active,
+	.btn.active,
+	.btn.disabled,
+	.btn[disabled] {
+	  color: #ffffff;
+	  background-color: #f89406;
+	  *background-color: #df8505;
+	}
+	/* Overwrite bootstrap-responsive navigation bar
+	-------------------------------------------------- */
+
+	/*main heading / text in nav bar*/
+	.navbar .brand {
+	  color:#f89a15;
+	  /*color: #ff6d00;*/
+	  text-shadow: none;
+	}
+	/*menu items inside the navigation bar */
+	.nav-collapse .nav > li > a, .nav-collapse .dropdown-menu a {
+	    color:#f89a15;
+	  /*color: #ff6d00;*/
+	  	text-shadow: none;
+	}
+
+	/*button that appears in collapsed menu*/
+	.navbar .btn-navbar {
+		background: #ffaf4b; /* Old browsers */
+		/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+		background: -moz-linear-gradient(left, #ffaf4b 0%, #ff920a 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ffaf4b), color-stop(100%,#ff920a)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* IE10+ */
+		background: linear-gradient(to right, #ffaf4b 0%,#ff920a 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=1 ); /* IE6-8 */
+	}
+	/* TODO:: seems to be a bug with hover .. only on ipod */
+	.navbar .btn-navbar:hover,
+	.navbar .btn-navbar:active,
+	.navbar .btn-navbar.active,
+	.navbar .btn-navbar.disabled,
+	.navbar .btn-navbar[disabled] {
+	  background-color: #f89a15;
+	}
+
+	.navbar-inner {
+	    background: rgb(74,74,74); /* Old browsers */
+	    background: -moz-linear-gradient(top, rgb(74,74,74) 1%, rgb(54,54,54) 100%); /* FF3.6+ */
+	    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgb(74,74,74)), color-stop(100%,rgb(54,54,54))); /* Chrome,Safari4+ */
+	    background: -webkit-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* Chrome10+,Safari5.1+ */
+	    background: -o-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* Opera 11.10+ */
+	    background: -ms-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* IE10+ */
+	    background: linear-gradient(to bottom, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* W3C */
+	    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4a4a4a', endColorstr='#363636',GradientType=0 ); /* IE6-9 */
+	}
+/* *****************   general  ***************** */
+	a {
+		color:#f89a15;
+		/*color: #ff6d00;*/
+	}
+
+	body {
+	    background-color: #333333;
+	    color: rgb(204, 204, 204);
+	}
+
+	h2 {
+	margin-bottom: 0;
+	font-size: 1.5em;
+	line-height: 1em;
+	letter-spacing: 0.5px;
+	color: inherit;
+	}
+
+	h3 {
+	margin-bottom: 0;
+	font-size: 1em;
+	line-height: 1em;
+	letter-spacing: 0.5px;
+	color: inherit;
+	}
+
+
+/* *****************  homepage menu ***************** */
+
+	.bs-docs-sidenav {
+	  width: 248px;
+	  margin: 30px 0 0;
+	  padding: 0;
+	   background-color: rgb(34, 34, 34);
+	  -webkit-border-radius: 6px;
+	     -moz-border-radius: 6px;
+	          border-radius: 6px;
+	  -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	     -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	          box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	}
+	.bs-docs-sidenav > li > a {
+	  display: block;
+	  width: 190px 9;
+	  margin: 0 0 -1px;
+	  padding: 8px 14px;
+	  border: 1px solid #363636;
+	  text-shadow:none;
+	}
+	.bs-docs-sidenav > li:first-child > a {
+	  -webkit-border-radius: 6px 6px 0 0;
+	     -moz-border-radius: 6px 6px 0 0;
+	          border-radius: 6px 6px 0 0;
+	}
+	.bs-docs-sidenav > li:last-child > a {
+	  -webkit-border-radius: 0 0 6px 6px;
+	     -moz-border-radius: 0 0 6px 6px;
+	          border-radius: 0 0 6px 6px;
+	}
+	.bs-docs-sidenav > .active > a {
+	  position: relative;
+	  z-index: 2;
+	  padding: 9px 15px;
+	  border: 0;
+	  -webkit-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	     -moz-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	          box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	}
+	/* Chevrons */
+	.bs-docs-sidenav .icon-chevron-right {
+	  float: right;
+	  margin-top: 2px;
+	  margin-right: -6px;
+	  opacity: .25;
+	}
+	.bs-docs-sidenav > li > a:hover {
+	  background-color: #464646;
+	  color: #fff;
+	}
+
+	.bs-docs-sidenav a:hover .icon-chevron-right {
+	  background-image: url(../img/glyphicons-halflings-white.png);
+	  opacity: 1;
+	}
+	.bs-docs-sidenav .active .icon-chevron-right,
+	.bs-docs-sidenav .active a:hover .icon-chevron-right {
+	  background-image: url(../img/lsmchevron.png);
+	  opacity: 1;
+	}
+
+	.bs-docs-sidenav.affix {
+	  top: 40px;
+	}
+
+	.bs-docs-sidenav.affix-bottom {
+	  position: absolute;
+	  top: auto;
+	  bottom: 270px;
+	}
+	img.objectdetails
+	{
+		height:3.0em;
+		width:4.5em;
+	}
+
+} /* end mobile Landscape*/
+/* ######################################### Desktop ########################################## */
+
+@media (min-width: 768px) and (max-width: 979px) {
+	.hero-unit h1 {
+	  margin-bottom: 0;
+	  font-size: 2.0em;
+	  line-height: 1.5em;
+	  letter-spacing: -1px;
+	  color: inherit;
+	}
+	.hero-unit p {
+	  font-size: 1.2em;
+	  font-weight: 20;
+	  line-height: 1.5em;
+	  color: inherit;
+	}	
+	.btn-large {
+	  padding: 7px 12px;
+	  font-size: 13px;
+	  line-height: normal;
+	  -webkit-border-radius: 5px;
+		 -moz-border-radius: 5px;
+			  border-radius: 5px;
+	}	
+
+	.hero-unit {
+	  background: url("../img/lsm724.jpg");
+	  padding: 1em;
+	  height: 15em;
+	  width: 50em;	
+	   margin-top: 1em;
+	  margin-bottom: 2em;
+	  background-color: #eeeeee;
+	  -webkit-border-radius: 0px;
+		 -moz-border-radius: 0px;
+			  border-radius: 0px;
+	}
+	/* General
+	-------------------------------------------------- */
+	img.objectdetails
+	{
+		height:2.5em;
+		width:2.5em;
+	}
+	#progress-indicator{
+	position: relative;
+	margin: 0 auto;
+	top: 60%;
+	width: 50%;
+	height: 50%;
+	}
+
+	#save-progress-indicator{
+	position: relative;
+	margin: 0 auto;
+	top: 30%;
+	width: 50%;
+	height: 50%;
+	}
+
+	highlight{
+	 background-color: red;
+	}
+	body {
+		
+		padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+		padding-bottom: 40px;
+	}	
+}
+/* large desktop */
+@media (min-width: 1280px) {
+	.hero-unit h1 {
+	  margin-bottom: 0;
+	  font-size: 6.0em;
+	  line-height: 1.5em;
+	  letter-spacing: -1px;
+	  color: inherit;
+	}
+	.hero-unit p {
+	  font-size: 1.2em;
+	  font-weight: 20;
+	  line-height: 1.5em;
+	  color: inherit;
+	}	
+	.btn-large {
+	  padding: 7px 12px;
+	  font-size: 13px;
+	  line-height: normal;
+	  -webkit-border-radius: 5px;
+		 -moz-border-radius: 5px;
+			  border-radius: 5px;
+	}	
+	.hero-unit {
+	  background: url("../img/lsm1280.jpg");
+	  padding: 1em;
+
+	  height: 12.5em;
+	  width: 42em;
+	  margin-top: 2em;
+	  margin-bottom: 2em;
+	  background-color: #eeeeee;
+	  -webkit-border-radius: 0px;
+		 -moz-border-radius: 0px;
+			  border-radius: 0px;
+	}
+
+	/* General
+	-------------------------------------------------- */
+	img.objectdetails
+	{
+		height:2.5em;
+		width:2.5em;
+	}
+
+	#progress-indicator{
+	position: relative;
+	margin: 0 auto;
+	top: 60%;
+	width: 50%;
+	height: 50%;
+	}
+
+	#save-progress-indicator{
+	position: relative;
+	margin: 0 auto;
+	top: 30%;
+	width: 50%;
+	height: 50%;
+	}
+
+	highlight{
+	 background-color: red;
+	}
+	body {
+		
+		padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+		padding-bottom: 40px;
+	}	
+}
+
+/* Global Styles */
+	img.objectdetails
+	{
+		height:2.5em;
+		width:2.5em;
+	}
+
+/* iPad Landscape*/
+@media (min-width:981px) and (max-width:1149px){
+	.hero-unit h1 {
+	  margin-bottom: 0;
+	  font-size: 0.2em;
+	  line-height: 1em;
+	  letter-spacing: -5px;
+	  color: inherit;
+	}
+	.hero-unit p {
+	  font-size: 0.2em;
+	  font-weight: 50;
+	  line-height: 1em;
+	  color: inherit;
+	}	
+	.hero-unit {
+	  background: url("../img/LSMorange724.png");
+	  padding: 1em;
+
+	  height: 11.5em;
+	  width: 38em;
+	  margin-top: 2em;
+	  margin-bottom: 2em;
+	  background-color: #eeeeee;
+	  -webkit-border-radius: 0px;
+		 -moz-border-radius: 0px;
+			  border-radius: 0px;
+	}
+	.text-general {
+	  color: #868686;
+	}
+
+	img {
+	    /*max-width: 50%;*/
+	}
+
+	/* show info button group not appearing properly */
+	.btn-group > .btn + .btn {
+		border-top-left-radius: 4px; 
+		border-bottom-left-radius: 4px
+	}
+
+	/* show info button group not appearing properly */
+	.btn-group > .btn + .btn {
+		border-top-left-radius: 4px; 
+		border-bottom-left-radius: 4px
+	}
+	/* change the default button on mobile to be orange - copied the btn-warning settings from main bootsrap file*/
+	.btn {
+	  color: #ffffff;
+	  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	  background-color: #faa732;
+	  *background-color: #f89406;
+	  background-image: -moz-linear-gradient(top, #fbb450, #f89406);
+	  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fbb450), to(#f89406));
+	  background-image: -webkit-linear-gradient(top, #fbb450, #f89406);
+	  background-image: -o-linear-gradient(top, #fbb450, #f89406);
+	  background-image: linear-gradient(to bottom, #fbb450, #f89406);
+	  background-repeat: repeat-x;
+	  border-color: #f89406 #f89406 #ad6704;
+	  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffbb450', endColorstr='#fff89406', GradientType=0);
+	  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	}
+
+	.btn-group.open .btn.dropdown-toggle,
+	.btn:hover,
+	.btn:focus,
+	.btn:active,
+	.btn.active,
+	.btn.disabled,
+	.btn[disabled] {
+	  color: #ffffff;
+	  background-color: #f89406;
+	  *background-color: #df8505;
+	}
+	/* Overwrite bootstrap-responsive navigation bar
+	-------------------------------------------------- */
+
+	/*main heading / text in nav bar*/
+	.navbar .brand {
+	  color:#f89a15;
+	  /*color: #ff6d00;*/
+	  text-shadow: none;
+	}
+	/*menu items inside the navigation bar */
+	.nav-collapse .nav > li > a, .nav-collapse .dropdown-menu a {
+	    color:#f89a15;
+	  /*color: #ff6d00;*/
+	  	text-shadow: none;
+	}
+
+	/*button that appears in collapsed menu*/
+	.navbar .btn-navbar {
+		background: #ffaf4b; /* Old browsers */
+		/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+		background: -moz-linear-gradient(left, #ffaf4b 0%, #ff920a 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ffaf4b), color-stop(100%,#ff920a)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* IE10+ */
+		background: linear-gradient(to right, #ffaf4b 0%,#ff920a 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=1 ); /* IE6-8 */
+	}
+	/* TODO:: seems to be a bug with hover .. only on ipod */
+	.navbar .btn-navbar:hover,
+	.navbar .btn-navbar:active,
+	.navbar .btn-navbar.active,
+	.navbar .btn-navbar.disabled,
+	.navbar .btn-navbar[disabled] {
+	  background-color: #f89a15;
+	}
+
+	.navbar-inner {
+	    background: rgb(74,74,74); /* Old browsers */
+	    background: -moz-linear-gradient(top, rgb(74,74,74) 1%, rgb(54,54,54) 100%); /* FF3.6+ */
+	    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgb(74,74,74)), color-stop(100%,rgb(54,54,54))); /* Chrome,Safari4+ */
+	    background: -webkit-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* Chrome10+,Safari5.1+ */
+	    background: -o-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* Opera 11.10+ */
+	    background: -ms-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* IE10+ */
+	    background: linear-gradient(to bottom, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* W3C */
+	    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4a4a4a', endColorstr='#363636',GradientType=0 ); /* IE6-9 */
+	}
+/* *****************   general  ***************** */
+	a {
+		color:#f89a15;
+		/*color: #ff6d00;*/
+	}
+
+	body {
+	    background-color: #333333;
+	    color: rgb(204, 204, 204);
+		padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+		padding-bottom: 40px;
+	}
+
+	h2 {
+	margin-bottom: 0;
+	font-size: 1.5em;
+	line-height: 1em;
+	letter-spacing: 0.5px;
+	color: inherit;
+	}
+
+	h3 {
+	margin-bottom: 0;
+	font-size: 1em;
+	line-height: 1em;
+	letter-spacing: 0.5px;
+	color: inherit;
+	}
+
+
+/* *****************  homepage menu ***************** */
+
+	.bs-docs-sidenav {
+	  width: 248px;
+	  margin: 30px 0 0;
+	  padding: 0;
+	   background-color: rgb(34, 34, 34);
+	  -webkit-border-radius: 6px;
+	     -moz-border-radius: 6px;
+	          border-radius: 6px;
+	  -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	     -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	          box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	}
+	.bs-docs-sidenav > li > a {
+	  display: block;
+	  width: 190px 9;
+	  margin: 0 0 -1px;
+	  padding: 8px 14px;
+	  border: 1px solid #363636;
+	  text-shadow:none;
+	}
+	.bs-docs-sidenav > li:first-child > a {
+	  -webkit-border-radius: 6px 6px 0 0;
+	     -moz-border-radius: 6px 6px 0 0;
+	          border-radius: 6px 6px 0 0;
+	}
+	.bs-docs-sidenav > li:last-child > a {
+	  -webkit-border-radius: 0 0 6px 6px;
+	     -moz-border-radius: 0 0 6px 6px;
+	          border-radius: 0 0 6px 6px;
+	}
+	.bs-docs-sidenav > .active > a {
+	  position: relative;
+	  z-index: 2;
+	  padding: 9px 15px;
+	  border: 0;
+	  -webkit-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	     -moz-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	          box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	}
+	/* Chevrons */
+	.bs-docs-sidenav .icon-chevron-right {
+	  float: right;
+	  margin-top: 2px;
+	  margin-right: -6px;
+	  opacity: .25;
+	}
+	.bs-docs-sidenav > li > a:hover {
+	  background-color: #464646;
+	  color: #fff;
+	}
+
+	.bs-docs-sidenav a:hover .icon-chevron-right {
+	  background-image: url(../img/glyphicons-halflings-white.png);
+	  opacity: 1;
+	}
+	.bs-docs-sidenav .active .icon-chevron-right,
+	.bs-docs-sidenav .active a:hover .icon-chevron-right {
+	  background-image: url(../img/lsmchevron.png);
+	  opacity: 1;
+	}
+
+	.bs-docs-sidenav.affix {
+	  top: 40px;
+	}
+
+	.bs-docs-sidenav.affix-bottom {
+	  position: absolute;
+	  top: auto;
+	  bottom: 270px;
+	}
+	img.objectdetails
+	{
+		height:2.5em;
+		width:2.5em;
+	}
+
+} /* iPad Landscape */
+
+/* iPad Portrait*/
+@media (min-width:641px) and (max-width:980px){
+	.hero-unit h1 {
+	  margin-bottom: 0;
+	  font-size: 0.2em;
+	  line-height: 1em;
+	  letter-spacing: -5px;
+	  color: inherit;
+	}
+	.hero-unit p {
+	  font-size: 0.2em;
+	  font-weight: 50;
+	  line-height: 1em;
+	  color: inherit;
+	}	
+	.hero-unit {
+	  background: url("../img/LSMorange578.png");
+	  padding: 1em;
+
+	  height: 8em;
+	  width: 30em;
+	  margin-top: 2em;
+	  margin-bottom: 2em;
+	  background-color: #eeeeee;
+	  -webkit-border-radius: 0px;
+		 -moz-border-radius: 0px;
+			  border-radius: 0px;
+	}
+	.text-general {
+	  color: #868686;
+	}
+
+	img {
+	    /*max-width: 50%;*/
+	}
+
+	/* show info button group not appearing properly */
+	.btn-group > .btn + .btn {
+		border-top-left-radius: 4px; 
+		border-bottom-left-radius: 4px
+	}
+
+	/* show info button group not appearing properly */
+	.btn-group > .btn + .btn {
+		border-top-left-radius: 4px; 
+		border-bottom-left-radius: 4px
+	}
+	/* change the default button on mobile to be orange - copied the btn-warning settings from main bootsrap file*/
+	.btn {
+	  color: #ffffff;
+	  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	  background-color: #faa732;
+	  *background-color: #f89406;
+	  background-image: -moz-linear-gradient(top, #fbb450, #f89406);
+	  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fbb450), to(#f89406));
+	  background-image: -webkit-linear-gradient(top, #fbb450, #f89406);
+	  background-image: -o-linear-gradient(top, #fbb450, #f89406);
+	  background-image: linear-gradient(to bottom, #fbb450, #f89406);
+	  background-repeat: repeat-x;
+	  border-color: #f89406 #f89406 #ad6704;
+	  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffbb450', endColorstr='#fff89406', GradientType=0);
+	  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	}
+
+	.btn-group.open .btn.dropdown-toggle,
+	.btn:hover,
+	.btn:focus,
+	.btn:active,
+	.btn.active,
+	.btn.disabled,
+	.btn[disabled] {
+	  color: #ffffff;
+	  background-color: #f89406;
+	  *background-color: #df8505;
+	}
+	/* Overwrite bootstrap-responsive navigation bar
+	-------------------------------------------------- */
+
+	/*main heading / text in nav bar*/
+	.navbar .brand {
+	  color:#f89a15;
+	  /*color: #ff6d00;*/
+	  text-shadow: none;
+	}
+	/*menu items inside the navigation bar */
+	.nav-collapse .nav > li > a, .nav-collapse .dropdown-menu a {
+	    color:#f89a15;
+	  /*color: #ff6d00;*/
+	  	text-shadow: none;
+	}
+
+	/*button that appears in collapsed menu*/
+	.navbar .btn-navbar {
+		background: #ffaf4b; /* Old browsers */
+		/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+		background: -moz-linear-gradient(left, #ffaf4b 0%, #ff920a 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ffaf4b), color-stop(100%,#ff920a)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(left, #ffaf4b 0%,#ff920a 100%); /* IE10+ */
+		background: linear-gradient(to right, #ffaf4b 0%,#ff920a 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=1 ); /* IE6-8 */
+	}
+	/* TODO:: seems to be a bug with hover .. only on ipod */
+	.navbar .btn-navbar:hover,
+	.navbar .btn-navbar:active,
+	.navbar .btn-navbar.active,
+	.navbar .btn-navbar.disabled,
+	.navbar .btn-navbar[disabled] {
+	  background-color: #f89a15;
+	}
+
+	.navbar-inner {
+	    background: rgb(74,74,74); /* Old browsers */
+	    background: -moz-linear-gradient(top, rgb(74,74,74) 1%, rgb(54,54,54) 100%); /* FF3.6+ */
+	    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,rgb(74,74,74)), color-stop(100%,rgb(54,54,54))); /* Chrome,Safari4+ */
+	    background: -webkit-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* Chrome10+,Safari5.1+ */
+	    background: -o-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* Opera 11.10+ */
+	    background: -ms-linear-gradient(top, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* IE10+ */
+	    background: linear-gradient(to bottom, rgb(74,74,74) 1%,rgb(54,54,54) 100%); /* W3C */
+	    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4a4a4a', endColorstr='#363636',GradientType=0 ); /* IE6-9 */
+	}
+/* *****************   general  ***************** */
+	a {
+		color:#f89a15;
+		/*color: #ff6d00;*/
+	}
+
+	body {
+	    background-color: #333333;
+	    color: rgb(204, 204, 204);
+		padding-top: 0px; /* 60px to make the container go all the way to the bottom of the topbar */
+		padding-bottom: 20px;
+	}
+
+	h2 {
+	margin-bottom: 0;
+	font-size: 1.5em;
+	line-height: 1em;
+	letter-spacing: 0.5px;
+	color: inherit;
+	}
+
+	h3 {
+	margin-bottom: 0;
+	font-size: 1em;
+	line-height: 1em;
+	letter-spacing: 0.5px;
+	color: inherit;
+	}
+
+
+/* *****************  homepage menu ***************** */
+
+	.bs-docs-sidenav {
+	  width: 248px;
+	  margin: 30px 0 0;
+	  padding: 0;
+	   background-color: rgb(34, 34, 34);
+	  -webkit-border-radius: 6px;
+	     -moz-border-radius: 6px;
+	          border-radius: 6px;
+	  -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	     -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	          box-shadow: 0 1px 4px rgba(0,0,0,.065);
+	}
+	.bs-docs-sidenav > li > a {
+	  display: block;
+	  width: 190px 9;
+	  margin: 0 0 -1px;
+	  padding: 8px 14px;
+	  border: 1px solid #363636;
+	  text-shadow:none;
+	}
+	.bs-docs-sidenav > li:first-child > a {
+	  -webkit-border-radius: 6px 6px 0 0;
+	     -moz-border-radius: 6px 6px 0 0;
+	          border-radius: 6px 6px 0 0;
+	}
+	.bs-docs-sidenav > li:last-child > a {
+	  -webkit-border-radius: 0 0 6px 6px;
+	     -moz-border-radius: 0 0 6px 6px;
+	          border-radius: 0 0 6px 6px;
+	}
+	.bs-docs-sidenav > .active > a {
+	  position: relative;
+	  z-index: 2;
+	  padding: 9px 15px;
+	  border: 0;
+	  -webkit-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	     -moz-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	          box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+	}
+	/* Chevrons */
+	.bs-docs-sidenav .icon-chevron-right {
+	  float: right;
+	  margin-top: 2px;
+	  margin-right: -6px;
+	  opacity: .25;
+	}
+	.bs-docs-sidenav > li > a:hover {
+	  background-color: #464646;
+	  color: #fff;
+	}
+
+	.bs-docs-sidenav a:hover .icon-chevron-right {
+	  background-image: url(../img/glyphicons-halflings-white.png);
+	  opacity: 1;
+	}
+	.bs-docs-sidenav .active .icon-chevron-right,
+	.bs-docs-sidenav .active a:hover .icon-chevron-right {
+	  background-image: url(../img/lsmchevron.png);
+	  opacity: 1;
+	}
+
+	.bs-docs-sidenav.affix {
+	  top: 40px;
+	}
+
+	.bs-docs-sidenav.affix-bottom {
+	  position: absolute;
+	  top: auto;
+	  bottom: 270px;
+	}
+	img.objectdetails
+	{
+		height:2.5em;
+		width:2.5em;
+	}
+
+} /* iPad Landscape */
+
+
+/* Google Nexus 7 Portrait */
+@media (min-width:500px) and (max-width: 720px) and (orientation:portrait){
+	.hero-unit h1 {
+	  margin-bottom: 0;
+	  font-size: 0.2em;
+	  line-height: 1em;
+	  letter-spacing: -5px;
+	  color: inherit;
+	}
+	.hero-unit p {
+	  font-size: 0.2em;
+	  font-weight: 50;
+	  line-height: 1em;
+	  color: inherit;
+	}	
+	.hero-unit {
+	  background: url("../img/LSMorange400.png");
+	  padding: 1em;
+
+	  height: 5em;
+	  width: 21em;
+	  margin-top: 2em;
+	  margin-bottom: 2em;
+	  background-color: #eeeeee;
+	  -webkit-border-radius: 0px;
+		 -moz-border-radius: 0px;
+			  border-radius: 0px;
+	}
+	.text-general {
+	  color: #868686;
+	}
+	body {
+	    background-color: #333333;
+	    /*background-color: red;*/
+	    color: rgb(204, 204, 204);
+		padding-top: 0px; /* 60px to make the container go all the way to the bottom of the topbar */
+		padding-bottom: 20px;
+	}
+
+	h2 {
+	margin-bottom: 0;
+	font-size: 1.5em;
+	line-height: 1em;
+	letter-spacing: 0.5px;
+	color: inherit;
+	}
+
+	h3 {
+	margin-bottom: 0;
+	font-size: 1em;
+	line-height: 1em;
+	letter-spacing: 0.5px;
+	color: inherit;
+	}
+}
+/* needed to add this media query to ensure that the submit button on switchesbylocation page always appears beside drop downs vs. overlapping
+even though we're using grid system, it was overlapping on the google nexus*/
+@media (max-width: 1280px) {
+    #L1Locations, #L2Locations, #L3Locations {
+        float: none;
+        display: inline-block;
+        margin-bottom: 1em;
+        width: auto;
+        text-align: left;
+    }
+    .row-fluid {
+        text-align: left;
+    }
+    select {
+        margin: 0;
+    }
+}
+

@@ -1,0 +1,18 @@
+key sql statements that are run when "has problems" check box is selected for an object. 
+
+
+              258 Query     START TRANSACTION
+                  258 Query     UPDATE RackObject SET name='CAESA2-JLEE-1', label='newlabelvalue', has_problems='no', asset_no='this', c'
+                  258 Query     INSERT INTO RackObjectHistory SELECT *, CURRENT_TIMESTAMP(), 'admin' FROM RackObject WHERE id='416'
+                  258 Query     select type as attr_type from Attribute where id = '22'
+                  258 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='22'
+                  258 Query     INSERT INTO AttributeValue (uint_value, object_id, object_tid, attr_id) VALUES ('1355270400', '416', '8')
+                  258 Query     select type as attr_type from Attribute where id = '21'
+                  258 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='21'
+                  258 Query     INSERT INTO AttributeValue (uint_value, object_id, object_tid, attr_id) VALUES ('1350000000', '416', '8')
+                  258 Query     select type as attr_type from Attribute where id = '24'
+                  258 Query     DELETE FROM AttributeValue WHERE   object_id='416' AND attr_id='24'
+                  258 Query     INSERT INTO AttributeValue (uint_value, object_id, object_tid, attr_id) VALUES ('1293840000', '416', '8')
+                  258 Query     SELECT DISTINCT RS.rack_id FROM RackSpace RS LEFT JOIN EntityLink EL ON RS.object_id = EL.parent_entity_d
+                  258 Query     commit
+       

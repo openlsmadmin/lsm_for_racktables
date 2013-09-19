@@ -1,0 +1,135 @@
+Array ( [realm] => object 
+
+		[id] => 417 
+		[name] => CAN-A2-152-SW-1 
+		[label] => 
+		[asset_no] => 
+		[objtype_id] => 1503 
+		[rack_id] => 
+		[Rack_name] => 
+		[row_id] => 
+		[Row_name] => 
+		[container_id] => 
+		[container_name] => 
+		[has_problems] => no 
+		[comment] => Julie Lee test 5406zl 
+		[nports] => 46 
+		[runs8021Q] => 
+		[etags] => Array ( 	[0] => Array ( [id] => 6 [tag] => Room 152 [parent_id] => 5 ) ) 
+		[itags] => Array ( 
+							[0] => Array ( 
+											[id] => 1 
+											[tag] => Location 
+											[ci] => 6 
+											[parent_id] => 
+											[refcnt] => Array ( [total] => 0 ) 
+											[trace] => Array ( ) 
+										) 
+							[1] => Array ( 
+											[id] => 2 
+											[tag] => CAN 
+											[ci] => 5 
+											[parent_id] => 1 
+											[refcnt] => Array ( [total] => 1 [object] => 1 ) 
+											[trace] => Array ( [0] => 1 ) 
+										) 
+							[2] => Array ( 
+											[id] => 5 
+											[tag] => Admin 2 
+											[ci] => 3 
+											[parent_id] => 2 
+											[refcnt] => Array ( [total] => 1 [object] => 1 ) 
+											[trace] => Array ( [0] => 1 [1] => 2 ) 
+										) 
+						) 
+		[dname] => CAN-A2-152-SW-1 
+		[atags] => Array ( 												*** attribute tags
+
+							[0] => Array ( [tag] => $id_417 ) 						Rack Object Id
+							[1] => Array ( [tag] => $typeid_1503 ) 					hardware type =1503
+							[2] => Array ( [tag] => $any_object ) 
+							[3] => Array ( [tag] => $cn_CAN-A2-152-SW-1 ) 
+							[4] => Array ( [tag] => $unmounted ) 
+							[5] => Array ( [tag] => $no_asset_tag ) 
+							[6] => Array ( [tag] => $attr_2_889 ) 
+					) 
+		[ports] => Array ( 
+							[0] => Array ( 
+											[id] => 3125 
+											[name] => A1 
+											[label] => 
+											[l2address] => 
+											[iif_id] => 1 
+											[iif_name] => hardwired 
+											[object_name] => CAN-A2-152-SW-1 
+											[oif_id] => 24 
+											[oif_name] => 1000Base-T 
+											[reservation_comment] => 
+											[remote_id] => 
+											[remote_name] => 
+											[remote_object_id] => 
+
+							[22] => Array ( 
+											[id] => 3139 
+											[name] => A8 
+											[label] => 
+											[l2address] => 
+											[iif_id] => 1 
+											[iif_name] => hardwired 
+											[object_name] => CAN-A2-152-SW-1 
+											[oif_id] => 24 
+											[oif_name] => 1000Base-T 
+											[reservation_comment] => 
+											[remote_id] => 
+											[remote_name] => 
+											[remote_object_id] => 
+											) 
+							[23] => Array ( 
+											[id] => 3141 
+											[name] => A9 
+											[label] => 
+											[l2address] => 
+											[iif_id] => 1 
+											[iif_name] => hardwired 
+											[object_name] => CAN-A2-152-SW-1 
+											[oif_id] => 24 
+											[oif_name] => 1000Base-T 
+											[reservation_comment] => 	
+											[remote_id] => 
+											[remote_name] => 
+											[remote_object_id] => 
+										) 
+									) 
+		[ipv4] => Array ( 
+							[10.14.3.44] => Array ( 
+													[osif] => vlan3 
+													[type] => regular 
+													[addrinfo] => Array ( 
+																		[version] => 4 
+																		[name] => 
+																		[reserved] => no 
+																		[outpf] => Array ( ) 
+																		[inpf] => Array ( ) 
+																		[rslist] => Array ( ) 
+																		[allocs] => Array ( 
+																							[0] => Array ( 
+																											[type] => regular 
+																											[name] => vlan3 
+																											[object_id] => 417 
+																											[object_name] => CAN-A2-152-SW-1 
+																										) 
+																							) 
+																		[lblist] => Array ( ) 
+																		[ip] => 10.14.3.44 
+																		[class] => trbusy 
+																		) 
+												) 
+						) 
+		[ipv6] => Array ( ) 
+		[nat4] => Array ( 
+							[out] => Array ( ) 
+							[in] => Array ( ) 
+						) 
+		[ipv4rspools] => Array ( ) 
+		[files] => Array ( ) 
+) 
